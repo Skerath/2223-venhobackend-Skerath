@@ -10,25 +10,16 @@ const getIngredientById = async (ctx) => {
     ctx.body = ingredientService.getById(ctx.params.id);
 }
 
-const getIngredientsByModifiers = async (ctx) => {
-    ctx.body = ingredientService.getByModifiers(ctx.params.modifiers);
-}
-
-const getIngredientsByMaxLevel = async (ctx) => {
-    ctx.body = ingredientService.getByMaxLevel(ctx.params.max_level);
-}
-
-const getIngredientsByUseType = async (ctx) => {
-    ctx.body = ingredientService.getByUseType(ctx.params.usetype);
+const getIngredientsByName = async (ctx) => {
+    ctx.body = ingredientService.getByName(ctx.params.name);
 }
 
 module.exports = (app) => {
+
     const router = new Router({prefix: '/api/ingredients'});
     router.get('/', getAllIngredients);
-    router.get('/:id', getIngredientById);
-    router.get('/modifiers', getIngredientsByModifiers);
-    router.get('/level/:max_level', getIngredientsByMaxLevel);
-    router.get('/:usetype', getIngredientsByUseType);
+    router.get('/id/:id', getIngredientById);
+    router.get('/name/:name', getIngredientsByName);
 
     app
         .use(router.routes())

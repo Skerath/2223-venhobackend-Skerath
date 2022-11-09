@@ -4,32 +4,46 @@ const getAll = () => {
     return INGREDIENTS;
 };
 
-const getById = (id) => {
-    // TODO error checking
-    return INGREDIENTS.filter(ingredient => ingredient.id === Number(id));
+const getById = (input) => {
+    // TODO: unauthorized/forbidden checking
+
+    // Check if input is correct
+    const id = Number.parseInt(input);
+    if (isNaN(id) || id < 0)
+        return 400;
+
+    // Collecting all ingredients matching input
+    const selectedIngredient = INGREDIENTS.filter(ingredient => ingredient.id === id);
+    switch (selectedIngredient.length) {
+        case 1:
+            return selectedIngredient;
+        case 0:
+            return 404;
+        default:
+            return 500;
+    }
+
 }
 
-const getByModifiers = () => {
-    // TODO implement
-    throw new Error("Not implemented yet");
-}
+const getByName = (input) => {
+    // TODO: unauthorized/forbidden checking
 
-const getByMaxLevel = (max_level) => {
-    // TODO error checking
-    return INGREDIENTS.filter(ingredient => ingredient.level_requirement <= Number(max_level));
-}
+    const name = String(input);
 
-const getByUseType = () => {
-    // TODO implement
-    throw new Error("Not implemented yet");
+    // Collecting all ingredients matching input
+    const selectedIngredients = INGREDIENTS.filter(ingredient => ingredient.name.toLowerCase().includes(String(name)));
+    switch (selectedIngredients.length) {
+        case 0:
+            return 404;
+        default:
+            return selectedIngredients;
+    }
 }
 
 module.exports = {
     // Get
     getAll, // All ingredients
     getById, // Ingredient with matching id
-    getByModifiers, // All ingredients containing specified modifier(s)
-    getByMaxLevel, // All ingredients up to max level specified
-    getByUseType // All ingredients allowed to be used in specified use type
+    getByName // Ingredient where name includes characters from input
 }
 
