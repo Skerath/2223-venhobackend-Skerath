@@ -1,30 +1,39 @@
-// Libraries
+// Koa
 const Koa = require('koa');
-const Router = require('@koa/router'); // Routing for Rest API
+const app = new Koa();
+
+
+// Environment
 const config = require('config'); // Configuration library
-const {getLogger} = require('./core/logging'); // Winston logging
-const bodyParser = require('koa-bodyparser'); // Parsing requests for Rest API
-
-
-// Logging
 const NODE_ENV = config.get('env');
+const CORS_ORIGIN = config.get('cors.origins');
+const CORS_AGE = config.get('cors.maxAge')
 const LOG_LEVEL = config.get('log.level');
 const LOG_DISABLED = config.get('log.disabled');
 
-// Rest API
-const installRestRoutes = require('./rest');
 
-console.log(`log level ${LOG_LEVEL}, logs enabled: ${LOG_DISABLED !== true}`)
-
-const app = new Koa();
+// Logging
+const {getLogger} = require('./core/logging'); // Winston logging
 const logger = getLogger();
-const router = new Router();
+console.log(` ---------\n Environment: ${NODE_ENV},\n log level ${LOG_LEVEL},\n logs enabled: ${!LOG_DISABLED}\n ---------`)
 
-app.use(bodyParser());
+
+// Cors authentication
+const koaCors = require('@koa/cors'); // Authentication
+app.use(koaCors({
+    origin: (ctx) => {
+        if (CORS_ORIGIN.indexOf(ctx.request.header.origin) !== -1) return ctx.request.header.origin; else return CORS_ORIGIN[0];
+    },
+    allowHeaders: ['Accept', 'Content-Type', 'Authorization'],
+    maxAge: CORS_AGE,
+}));
+
+
+// Enabling routing
+const installRestRoutes = require('./rest');
 installRestRoutes(app);
-app
-    .use(router.routes())
-    .use(router.allowedMethods());
 
-logger.info(`🚀 Server listening on http://localhost:9000`);
+
+// Loading complete
+logger.info(`Server listening on http://localhost:9000`);
 app.listen(9000);
