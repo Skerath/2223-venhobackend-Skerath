@@ -5,23 +5,27 @@ const getAllIngredients = async (ctx) => {
     ctx.body = ingredientService.getAll();
 }
 
-// TODO figure a better way out to change status
+const parseResult = (result) => {
+    if (result === 404)
+        return 404;
+    if (result === 400)
+        return 400;
+    if (result === 500)
+        return 500;
+    else return undefined;
+}
+
+
 const getIngredientById = async (ctx) => {
     const result = ingredientService.getById(ctx.params.id);
-    if (result === 404)
-        ctx.status = 404
-    else if (result === 400)
-        ctx.status = 400
-    else
-        ctx.body = result;
+    const parsedResult = parseResult(result);
+    parsedResult ? ctx.status = parsedResult : ctx.body = result;
 }
 
 const getIngredientsByName = async (ctx) => {
     const result = ingredientService.getByName(ctx.params.name);
-    if (result === 404)
-        ctx.status = 404
-    else
-        ctx.body = result;
+    const parsedResult = parseResult(result);
+    parsedResult ? ctx.status = parsedResult : ctx.body = result;
 }
 
 module.exports = (app) => {

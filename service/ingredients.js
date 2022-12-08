@@ -29,9 +29,8 @@ const getByName = (input) => {
     // TODO: unauthorized/forbidden checking
 
     const name = String(input);
-
     // Collecting all ingredients matching input
-    const selectedIngredients = INGREDIENTS.filter(ingredient => ingredient.name.toLowerCase().includes(String(name)));
+    const selectedIngredients = INGREDIENTS.filter(ingredient => ingredient.name.toLowerCase() === (String(name).toLowerCase()));
     switch (selectedIngredients.length) {
         case 0:
             return 404;
