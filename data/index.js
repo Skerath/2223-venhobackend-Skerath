@@ -23,8 +23,9 @@ const knexConfig = {
 }
 
 const getKnex = async function () {
-    if (databaseConnection)
-        return databaseConnection;
+    if (!databaseConnection)
+        await initKnex();
+    return databaseConnection
 }
 
 const initKnex = async function () {
