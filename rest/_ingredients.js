@@ -1,8 +1,9 @@
 const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
+const {getLogger} = require("../core/logging");
 
 const getAllIngredients = async (ctx) => {
-    ctx.body = ingredientService.getAll();
+    ctx.body = await ingredientService.getAll();
 }
 
 const parseResult = (result) => {

@@ -22,13 +22,13 @@ const knexConfig = {
     }
 }
 
-const getKnex = async function () {
+function getKnex() {
     if (!databaseConnection)
-        await initKnex();
-    return databaseConnection
+        throw new Error(`Error: cannot invoke database as it has not been initialized.`);
+    return databaseConnection;
 }
 
-const initKnex = async function () {
+async function initKnex() {
     try {
         databaseConnection = knex(knexConfig);
         await databaseConnection.raw('SELECT 1+1 AS result');
