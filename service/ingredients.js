@@ -25,7 +25,6 @@ const joinIngredientTables = (knex) => {
 const getAll = async () => {
     try {
         const results = await joinIngredientTables(getKnex()(tables.resources).select())
-            .whereNotNull('itemResourceId')
             .then(ingredient => {
                 return filterKeys(ingredient);
             });
@@ -36,29 +35,34 @@ const getAll = async () => {
     }
 };
 
-const getById = (input) => {
-    // TODO: unauthorized/forbidden checking
-
-    // Check if input is correct
-    const id = Number.parseInt(input);
-    if (isNaN(id) || id < 0)
+const getById = async (input) => {
+    if (isNaN(input) || input < 0) {
+        logger.info(`Request for getById Ingredients failed on ${new Date()}: '${input}' is not a number.`)
         return 400;
+    }
 
-    // Collecting all ingredients matching input
-    const selectedIngredient = INGREDIENTS.filter(ingredient => ingredient.id === id);
+    const result = await joinIngredientTables(getKnex()(tables.resources).select())
+        .then(ingredient => {
+            return filterKeys(ingredient);
+        });
+    const selectedIngredient = result.filter(ingredient => ingredient.resourceID === Number.parseInt(input));
+
     switch (selectedIngredient.length) {
         case 1:
+            logger.info(`Successfully handled getById Ingredient on ${new Date()} for input '${input}'.`);
             return selectedIngredient;
         case 0:
+            logger.info(`Request for getById Ingredient failed on ${new Date()}: '${input}' could not be found.`)
             return 404;
         default:
+            logger.info(`Request for getById Ingredient failed on ${new Date()}: input '${input}' resulted in an internal server error.`)
             return 500;
     }
 
 }
 
 const getByName = (input) => {
-    // TODO: unauthorized/forbidden checking
+    // TODO: redo
 
     const name = String(input);
     // Collecting all ingredients matching input

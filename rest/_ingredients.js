@@ -18,7 +18,7 @@ const parseResult = (result) => {
 
 
 const getIngredientById = async (ctx) => {
-    const result = ingredientService.getById(ctx.params.id);
+    const result = await ingredientService.getById(ctx.params.id);
     const parsedResult = parseResult(result);
     parsedResult ? ctx.status = parsedResult : ctx.body = result;
 }
