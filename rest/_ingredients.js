@@ -1,10 +1,5 @@
 const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
-const {getLogger} = require("../core/logging");
-
-const getAllIngredients = async (ctx) => {
-    ctx.body = await ingredientService.getAll();
-}
 
 const parseResult = (result) => {
     if (result === 404)
@@ -16,6 +11,21 @@ const parseResult = (result) => {
     else return undefined;
 }
 
+const getAllIngredients = async (ctx) => {
+    ctx.body = await ingredientService.getAll();
+}
+
+const parseQuery = async (ctx) => {
+    const query = ctx.request.query;
+
+    if (Object.keys(query).length === 0)
+        return await getAllIngredients(ctx);
+    else {
+        const result = await ingredientService.getByQuery(query);
+        const parsedResult = parseResult(result);
+        parsedResult ? ctx.status = parsedResult : ctx.body = result;
+    }
+}
 
 const getIngredientById = async (ctx) => {
     const result = await ingredientService.getById(ctx.params.id);
@@ -24,7 +34,7 @@ const getIngredientById = async (ctx) => {
 }
 
 const getIngredientsByName = async (ctx) => {
-    const result = ingredientService.getByName(ctx.params.name);
+    const result = await ingredientService.getByName(ctx.params.name);
     const parsedResult = parseResult(result);
     parsedResult ? ctx.status = parsedResult : ctx.body = result;
 }
@@ -32,7 +42,7 @@ const getIngredientsByName = async (ctx) => {
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
-    router.get('/', getAllIngredients);
+    router.get('/', parseQuery);
     router.get('/id/:id', getIngredientById);
     router.get('/name/:name', getIngredientsByName);
 
