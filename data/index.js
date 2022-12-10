@@ -51,7 +51,7 @@ const tables = Object.freeze({
 })
 
 module.exports = {
-    initKnex, // Connects to database
-    getKnex, // Returns database connection
-    tables, // Object containing Database tables
+    initKnex,
+    getKnex,
+    tables
 }

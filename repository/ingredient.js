@@ -52,7 +52,7 @@ const findIngredientsByQuery = async (query) => {
             if (query.tier) builder.where('tier', query.tier);
             if (query.minlevel) builder.where('level', '>=', query.minlevel);
             if (query.maxlevel) builder.where('level', '<=', query.maxlevel);
-            // if (query.profession) builder.whereRaw(`'${query.profession}' in (select JSON_EXTRACT(Resources.professions))`);
+            if (query.profession) builder.whereRaw(`? MEMBER OF(professions)`, [query.profession.toUpperCase()]);
         }).then(ingredient => {
             return filterKeys(ingredient);
         });
