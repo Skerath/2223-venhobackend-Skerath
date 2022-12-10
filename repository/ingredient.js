@@ -1,6 +1,5 @@
 const {tables, getKnex} = require('../data/index');
-const {getLogger} = require("../core/logging");
-const {loggers} = require("winston");
+const {ingredientDatabaseColumns} = require("../data");
 
 const filterKeys = (listOfObjectsToFilter) => {
     listOfObjectsToFilter.forEach(object => {
@@ -16,9 +15,9 @@ const filterKeys = (listOfObjectsToFilter) => {
 }
 
 const joinIngredientTables = () => {
-    return getKnex()(tables.resources).leftJoin(tables.itemIdentifiers, 'resourceId', 'itemResourceId')
-        .leftJoin(tables.consumableIdentifiers, 'resourceId', 'consumableResourceId')
-        .leftJoin(tables.ingredientPositionModifier, 'resourceId', 'positionModifierId');
+    return getKnex()(tables.resources).leftJoin(tables.itemIdentifiers, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.itemOnlyIdentifiersId)
+        .leftJoin(tables.consumableIdentifiers, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.consumableOnlyIdentifiersId)
+        .leftJoin(tables.ingredientPositionModifier, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.ingredientPositionModifierId);
 }
 
 const findAllIngredients = async () => {
@@ -30,7 +29,7 @@ const findAllIngredients = async () => {
 
 const findIngredientsById = async (id) => {
     return joinIngredientTables()
-        .where('resourceID', Number.parseInt(id))
+        .where(ingredientDatabaseColumns.resourceId, Number.parseInt(id))
         .then(ingredient => {
             return filterKeys(ingredient);
         });
@@ -47,12 +46,13 @@ const findIngredientsByName = async (name) => {
 const findIngredientsByQuery = async (query) => {
     return joinIngredientTables()
         .where((builder) => {
-            if (query.id) builder.where('resourceID', query.id);
+            if (query.id) builder.where(ingredientDatabaseColumns.resourceId, query.id);
             if (query.name) builder.whereILike('name', `%${query.name}%`);
             if (query.tier) builder.where('tier', query.tier);
             if (query.minlevel) builder.where('level', '>=', query.minlevel);
             if (query.maxlevel) builder.where('level', '<=', query.maxlevel);
-            if (query.profession) builder.whereRaw(`? MEMBER OF(professions)`, [query.profession.toUpperCase()]);
+            if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession.toUpperCase(), ingredientDatabaseColumns.professions]);
+            if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier.toUpperCase(), ingredientDatabaseColumns.modifiers]);
         }).then(ingredient => {
             return filterKeys(ingredient);
         });

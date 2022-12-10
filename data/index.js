@@ -50,8 +50,21 @@ const tables = Object.freeze({
     ingredientPositionModifier: 'IngredientPositionModifiers',
 })
 
+const ingredientDatabaseColumns = Object.freeze({
+    resourceId: 'resourceID',
+    consumableOnlyIdentifiersId: 'consumableResourceId',
+    itemOnlyIdentifiersId: 'itemResourceId',
+    ingredientPositionModifierId: 'positionModifierId',
+    name: 'name',
+    tier: 'tier',
+    level: 'level',
+    professions: 'professions',
+    modifiers: 'modifiers',
+})
+
 module.exports = {
     initKnex,
     getKnex,
-    tables
+    tables,
+    ingredientDatabaseColumns,
 }
