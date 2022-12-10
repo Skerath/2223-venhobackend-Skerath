@@ -45,14 +45,17 @@ const findIngredientsByName = async (name) => {
 }
 
 const findIngredientsByQuery = async (query) => {
-    let sqlQuery = joinIngredientTables();
-    if (query.name)
-        sqlQuery = sqlQuery.where('name', query.name);
-    if (query.id)
-        sqlQuery = sqlQuery.where('resourceID', query.id);
-    return sqlQuery.then(ingredient => {
-        return filterKeys(ingredient);
-    });
+    return joinIngredientTables()
+        .where((builder) => {
+            if (query.id) builder.where('resourceID', query.id);
+            if (query.name) builder.whereILike('name', `%${query.name}%`);
+            if (query.tier) builder.where('tier', query.tier);
+            if (query.minlevel) builder.where('level', '>=', query.minlevel);
+            if (query.maxlevel) builder.where('level', '<=', query.maxlevel);
+            // if (query.profession) builder.whereRaw(`'${query.profession}' in (select JSON_EXTRACT(Resources.professions))`);
+        }).then(ingredient => {
+            return filterKeys(ingredient);
+        });
 }
 
 module.exports = {
