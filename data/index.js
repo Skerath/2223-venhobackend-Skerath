@@ -7,18 +7,24 @@ const config = require('config'); // Configuration library
 const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
+const DATABASE_HOSTNAME = 'vichogent.be',
+    DATABASE_PORT = 40043,
+    DATABASE_USERNAME = '181905mc',
+    DATABASE_NAME = '181905mc',
+    DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
+    isDevelopment = NODE_ENV === 'development';
 
 // Connection
 let databaseConnection;
 const knexConfig = {
     client: 'mysql2',
     connection: {
-        host: 'vichogent.be',
-        port: 40043,
-        user: '181905mc',
-        database: '181905mc',
-        password: 'jRIPQ74Qw1EoZwjT9BPx',
-        insecureAuth: NODE_ENV === 'development',
+        host: DATABASE_HOSTNAME,
+        port: DATABASE_PORT,
+        user: DATABASE_USERNAME,
+        database: DATABASE_NAME,
+        password: DATABASE_PASSWORD,
+        insecureAuth: isDevelopment,
     }
 }
 
@@ -32,7 +38,7 @@ async function initKnex() {
     try {
         databaseConnection = knex(knexConfig);
         await databaseConnection.raw('SELECT 1+1 AS result');
-        logger.info(`Connected to MySQL on '${knexConfig.connection.host}'`);
+        logger.info(`Connected to MySQL on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
     } catch
         (error) {
         logger.error(`Error when connecting to MySQL: ${error}`);

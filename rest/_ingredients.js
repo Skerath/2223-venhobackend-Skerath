@@ -42,7 +42,7 @@ const getIngredientsByName = async (ctx) => {
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
-    router.get('/', parseQuery);
+    router.get('/', parseQuery); // Query based. If no query, will return all ingredients
     router.get('/id/:id', getIngredientById);
     router.get('/name/:name', getIngredientsByName);
 
