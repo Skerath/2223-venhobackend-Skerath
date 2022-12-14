@@ -1,4 +1,4 @@
-const {resourcesTables, resourcesColumns, getKnex} = require('../data/index');
+const {resourcesTables, resourcesColumns, getKnex} = require('../data');
 
 const filterKeys = (listOfObjectsToFilter) => {
     listOfObjectsToFilter.forEach(object => {

@@ -8,10 +8,10 @@ const CORS_ORIGIN = config.get('cors.origins');
 const CORS_AGE = config.get('cors.maxAge')
 const LOG_LEVEL = config.get('log.level');
 const LOG_DISABLED = config.get('log.disabled');
-const {getLogger} = require('./core/logging'); // Winston logging
+const {getLogger} = require('./src/core/logging'); // Winston logging
 const koaCors = require('@koa/cors'); // Authentication
-const installRestRoutes = require('./rest');
-const {initKnex} = require("./data");
+const installRestRoutes = require('./src/rest');
+const {initKnex} = require("./src/data");
 
 async function main() {
     const logger = getLogger();

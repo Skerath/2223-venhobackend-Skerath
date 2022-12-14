@@ -8,11 +8,18 @@ const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
 
-const DATABASE_HOSTNAME = 'vichogent.be',
-    DATABASE_PORT = 40043,
-    DATABASE_USERNAME = '181905mc',
-    DATABASE_NAME = '181905mc',
-    DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
+// const DATABASE_HOSTNAME = 'vichogent.be',
+//     DATABASE_PORT = 40043,
+//     DATABASE_USERNAME = '181905mc',
+//     DATABASE_NAME = '181905mc',
+//     DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
+//     isDevelopment = NODE_ENV === 'development';
+
+const DATABASE_HOSTNAME = 'ID373401_venhodev.db.webhosting.be',
+    DATABASE_PORT = 3306,
+    DATABASE_USERNAME = 'ID373401_venhodev',
+    DATABASE_NAME = 'ID373401_venhodev',
+    DATABASE_PASSWORD = '7B1wkqv3BP9W09e912TX',
     isDevelopment = NODE_ENV === 'development';
 
 // Connection
@@ -27,10 +34,10 @@ const knexConfig = {
         password: DATABASE_PASSWORD,
         insecureAuth: isDevelopment,
     },
-    // migrations: {
-    //     tableName: 'knex_meta',
-    //     directory: join('src', 'data', 'migrations'),
-    // }
+    migrations: {
+        tableName: 'knex_meta',
+        directory: 'src/data/migrations',
+    },
 }
 
 function getKnex() {
@@ -43,7 +50,6 @@ async function initKnex() {
     try {
         databaseConnection = knex(knexConfig);
         await databaseConnection.raw('SELECT 1+1 AS result');
-        logger.info(`Connected to MySQL on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
     } catch
         (error) {
         logger.error(`Error when connecting to MySQL: ${error}`);
@@ -51,6 +57,17 @@ async function initKnex() {
         databaseConnection = undefined;
         setTimeout(initKnex, retryConnection);
     }
+
+    try {
+        await getKnex().migrate.latest();
+    } catch (error) {
+        logger.error('Error while migrating database', {
+            error,
+        });
+        throw new Error('Migrations failed, check the logs');
+    }
+
+    logger.info(`Connected to MySQL on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
 }
 
 // Tables
