@@ -1,5 +1,4 @@
-const {tables, getKnex} = require('../data/index');
-const {ingredientDatabaseColumns} = require("../data");
+const {resourcesTables, resourcesColumns, getKnex} = require('../data/index');
 
 const filterKeys = (listOfObjectsToFilter) => {
     listOfObjectsToFilter.forEach(object => {
@@ -12,28 +11,28 @@ const filterKeys = (listOfObjectsToFilter) => {
         });
     });
     return listOfObjectsToFilter;
-}
+};
 
 const joinIngredientTables = () => {
-    return getKnex()(tables.resources).leftJoin(tables.itemIdentifiers, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.itemOnlyIdentifiersId)
-        .leftJoin(tables.consumableIdentifiers, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.consumableOnlyIdentifiersId)
-        .leftJoin(tables.ingredientPositionModifier, ingredientDatabaseColumns.resourceId, ingredientDatabaseColumns.ingredientPositionModifierId);
-}
+    return getKnex()(resourcesTables.resources).leftJoin(resourcesTables.itemIdentifiers, resourcesColumns.resources.id, resourcesColumns.itemOnlyIdentifiers.id)
+        .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
+        .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id);
+};
 
 const findAllIngredients = async () => {
     return joinIngredientTables()
         .then(ingredient => {
             return filterKeys(ingredient);
         });
-}
+};
 
 const findIngredientsById = async (id) => {
     return joinIngredientTables()
-        .where(ingredientDatabaseColumns.resourceId, Number.parseInt(id))
+        .where(resourcesColumns.resources.id, Number.parseInt(id))
         .then(ingredient => {
             return filterKeys(ingredient);
         });
-}
+};
 
 const findIngredientsByName = async (name) => {
     return joinIngredientTables()
@@ -41,18 +40,18 @@ const findIngredientsByName = async (name) => {
         .then(ingredient => {
             return filterKeys(ingredient);
         });
-}
+};
 
 const findIngredientsByQuery = async (query) => {
     return joinIngredientTables()
         .where((builder) => {
-            if (query.id) builder.where(ingredientDatabaseColumns.resourceId, query.id);
-            if (query.name) builder.whereILike('name', `%${query.name}%`);
-            if (query.tier) builder.where('tier', query.tier);
-            if (query.minlevel) builder.where('level', '>=', query.minlevel);
-            if (query.maxlevel) builder.where('level', '<=', query.maxlevel);
-            if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession.toUpperCase(), ingredientDatabaseColumns.professions]);
-            if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier.toUpperCase(), ingredientDatabaseColumns.modifiers]);
+            if (query.id) builder.where(resourcesColumns.resources.id, query.id);
+            if (query.name) builder.whereILike(resourcesColumns.resources.name, `%${query.name}%`);
+            if (query.tier) builder.where(resourcesColumns.resources.tier, query.tier);
+            if (query.minlevel) builder.where(resourcesColumns.resources.level, '>=', query.minlevel);
+            if (query.maxlevel) builder.where(resourcesColumns.resources.level, '<=', query.maxlevel);
+            if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession.toUpperCase(), resourcesColumns.resources.professions]);
+            if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier.toUpperCase(), resourcesColumns.resources.modifiers]);
         }).then(ingredient => {
             return filterKeys(ingredient);
         });
@@ -63,5 +62,4 @@ module.exports = {
     findIngredientsById,
     findIngredientsByName,
     findIngredientsByQuery,
-
-}
+};

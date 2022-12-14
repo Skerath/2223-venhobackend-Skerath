@@ -7,6 +7,7 @@ const config = require('config'); // Configuration library
 const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
+
 const DATABASE_HOSTNAME = 'vichogent.be',
     DATABASE_PORT = 40043,
     DATABASE_USERNAME = '181905mc',
@@ -25,7 +26,11 @@ const knexConfig = {
         database: DATABASE_NAME,
         password: DATABASE_PASSWORD,
         insecureAuth: isDevelopment,
-    }
+    },
+    // migrations: {
+    //     tableName: 'knex_meta',
+    //     directory: join('src', 'data', 'migrations'),
+    // }
 }
 
 function getKnex() {
@@ -49,28 +54,50 @@ async function initKnex() {
 }
 
 // Tables
-const tables = Object.freeze({
+const resourcesTables = Object.freeze({
     resources: 'Resources',
     consumableIdentifiers: 'ConsumableOnlyIdentifiers',
     itemIdentifiers: 'ItemOnlyIdentifiers',
     ingredientPositionModifier: 'IngredientPositionModifiers',
 })
 
-const ingredientDatabaseColumns = Object.freeze({
-    resourceId: 'resourceID',
-    consumableOnlyIdentifiersId: 'consumableResourceId',
-    itemOnlyIdentifiersId: 'itemResourceId',
-    ingredientPositionModifierId: 'positionModifierId',
-    name: 'name',
-    tier: 'tier',
-    level: 'level',
-    professions: 'professions',
-    modifiers: 'modifiers',
-})
+const resourcesColumns = Object.freeze({
+    resources: {
+        id: 'resourceID',
+        name: 'name',
+        tier: 'tier',
+        level: 'level',
+        professions: 'professions',
+        modifiers: 'modifiers',
+    },
+    itemOnlyIdentifiers: {
+        id: 'itemResourceId',
+        durability: 'durability_modifier',
+        strength: 'strength_requirement',
+        dexterity: 'dexterity_requirement',
+        intelligence: 'intelligence_requirement',
+        defence: 'defence_requirement',
+        agility: 'agility_requirement',
+    },
+    consumableOnlyIdentifiers: {
+        id: 'consumableResourceId',
+        duration: 'duration',
+        charges: 'charges',
+    },
+    ingredientPositionModifiers: {
+        id: 'positionModifierId',
+        left: 'left',
+        right: 'right',
+        above: 'above',
+        under: 'under',
+        touching: 'touching',
+        notTouching: 'not_touching',
+    }
+});
 
 module.exports = {
     initKnex,
     getKnex,
-    tables,
-    ingredientDatabaseColumns,
+    resourcesTables,
+    resourcesColumns,
 }
