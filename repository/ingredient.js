@@ -50,8 +50,8 @@ const findIngredientsByQuery = async (query) => {
             if (query.tier) builder.where(resourcesColumns.resources.tier, query.tier);
             if (query.minlevel) builder.where(resourcesColumns.resources.level, '>=', query.minlevel);
             if (query.maxlevel) builder.where(resourcesColumns.resources.level, '<=', query.maxlevel);
-            if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession.toUpperCase(), resourcesColumns.resources.professions]);
-            if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier.toUpperCase(), resourcesColumns.resources.modifiers]);
+            if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession, resourcesColumns.resources.professions]);
+            if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier, resourcesColumns.resources.modifiers]);
         }).then(ingredient => {
             return filterKeys(ingredient);
         });

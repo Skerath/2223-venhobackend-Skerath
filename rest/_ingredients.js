@@ -9,8 +9,8 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
     tier: Joi.number().integer().positive().valid(0, 1, 2, 3),
     minlevel: Joi.number().integer().positive().allow(0),
     maxlevel: Joi.number().integer().positive(),
-    profession: Joi.string().max(14),
-    modifier: Joi.string().max(50),
+    profession: Joi.string().uppercase().max(14),
+    modifier: Joi.string().uppercase().max(50),
 });
 
 

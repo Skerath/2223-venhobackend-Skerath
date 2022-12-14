@@ -8,6 +8,7 @@ const JOI_OPTIONS = {
 }
 
 const validateQuery = (schema) => {
+
     if (!schema)
         schema = {
             query: {},
@@ -16,22 +17,26 @@ const validateQuery = (schema) => {
         };
 
     return (ctx, next) => {
+        const isQuery = !(Object.keys(ctx.request.query).length === 0); // Handle as query or as params request
         const errors = {}
         if (!Joi.isSchema(schema.params))
             schema.params = Joi.object(schema.params || {});
-
 
         const {
             error: paramsError,
             value: paramsValue,
         } = schema.params.validate(
-            Object.keys(ctx.request.query).length === 0 ? ctx.params : ctx.request.query,
+            isQuery ? ctx.request.query : ctx.params,
             JOI_OPTIONS);
 
         if (paramsError)
             errors.params = cleanupJoiError(paramsError);
-        else
-            ctx.params = paramsValue;
+        else {
+            if (isQuery)
+                ctx.request.query = paramsValue;
+            else
+                ctx.params = paramsValue;
+        }
 
         if (Object.keys(errors).length)
             ctx.throw(400, 'Validation failed, check details for more information', {
