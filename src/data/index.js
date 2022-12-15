@@ -8,18 +8,11 @@ const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
 
-// const DATABASE_HOSTNAME = 'vichogent.be',
-//     DATABASE_PORT = 40043,
-//     DATABASE_USERNAME = '181905mc',
-//     DATABASE_NAME = '181905mc',
-//     DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
-//     isDevelopment = NODE_ENV === 'development';
-
-const DATABASE_HOSTNAME = 'ID373401_venhodev.db.webhosting.be',
+const DATABASE_HOSTNAME = 'localhost',
     DATABASE_PORT = 3306,
-    DATABASE_USERNAME = 'ID373401_venhodev',
-    DATABASE_NAME = 'ID373401_venhodev',
-    DATABASE_PASSWORD = '7B1wkqv3BP9W09e912TX',
+    DATABASE_USERNAME = 'dbdev',
+    DATABASE_NAME = 'venho_dev',
+    DATABASE_PASSWORD = 'dbdev',
     isDevelopment = NODE_ENV === 'development';
 
 // Connection
@@ -65,6 +58,7 @@ async function initKnex() {
 
     try {
         await getKnex().migrate.latest();
+        logger.info(`Successfully migrated latest schema layout on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
     } catch (error) {
         logger.error('Error while migrating database', {
             error,
