@@ -38,7 +38,11 @@ const knexConfig = {
         tableName: 'knex_meta',
         directory: 'src/data/migrations',
     },
-}
+
+    seeds: {
+        directory: 'src/data/seeds',
+    },
+};
 
 function getKnex() {
     if (!databaseConnection)
@@ -50,6 +54,7 @@ async function initKnex() {
     try {
         databaseConnection = knex(knexConfig);
         await databaseConnection.raw('SELECT 1+1 AS result');
+        logger.info(`Connected to MySQL on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
     } catch
         (error) {
         logger.error(`Error when connecting to MySQL: ${error}`);
@@ -67,7 +72,16 @@ async function initKnex() {
         throw new Error('Migrations failed, check the logs');
     }
 
-    logger.info(`Connected to MySQL on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
+    if (isDevelopment) {
+        try {
+            await getKnex().seed.run();
+            logger.info(`Successfully loaded latest seed on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
+        } catch (error) {
+            console.log(error);
+            logger.error('Error while seeding database', {error,});
+        }
+    }
+
 }
 
 // Tables
