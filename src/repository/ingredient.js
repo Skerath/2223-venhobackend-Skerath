@@ -26,20 +26,29 @@ const findAllIngredients = async () => {
         });
 };
 
-const findIngredientsById = async (id) => {
-    return joinIngredientTables()
-        .where(resourcesColumns.resources.id, Number.parseInt(id))
-        .then(ingredient => {
-            return filterKeys(ingredient);
-        });
+const findIngredientModifiers = async () => {
+    const knexResults =
+        await getKnex()(resourcesTables.resources)
+            .distinct('results')
+            .crossJoin(getKnex().raw('JSON_TABLE(JSON_KEYS(modifiers), "$[*]" COLUMNS (results VARCHAR(50) PATH "$")) t'))
+            .orderBy('results');
+    return knexResults.map(results => results.results);
 };
 
-const findIngredientsByName = async (name) => {
-    return joinIngredientTables()
-        .where('name', name)
-        .then(ingredient => {
-            return filterKeys(ingredient);
-        });
+const findIngredientNames = async () => {
+    let knexResults =
+        await getKnex()(resourcesTables.resources)
+            .distinct('name');
+    return knexResults.map(results => results.name);
+};
+
+const findIngredientProfessions = async () => {
+    const knexResults =
+        await getKnex()(resourcesTables.resources)
+            .distinct('results')
+            .crossJoin(getKnex().raw('JSON_TABLE(professions, "$[*]" COLUMNS (results VARCHAR(50) PATH "$")) t'))
+            .orderBy('results');
+    return knexResults.map(results => results.results);
 };
 
 const findIngredientsByQuery = async (query) => {
@@ -59,7 +68,8 @@ const findIngredientsByQuery = async (query) => {
 
 module.exports = {
     findAllIngredients,
-    findIngredientsById,
-    findIngredientsByName,
     findIngredientsByQuery,
+    findIngredientModifiers,
+    findIngredientNames,
+    findIngredientProfessions,
 };

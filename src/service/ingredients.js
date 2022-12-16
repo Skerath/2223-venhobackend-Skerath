@@ -1,19 +1,21 @@
-const {getLogger} = require("../core/logging");
-const logger = getLogger();
 const {
-    findAllIngredients, findIngredientsById, findIngredientsByName, findIngredientsByQuery
+    findAllIngredients, findIngredientNames, findIngredientsByQuery, findIngredientModifiers, findIngredientProfessions
 } = require('../repository/ingredient');
 
 const getAll = async () => {
     return findAllIngredients();
 };
 
-const getById = async (input) => {
-    return await findIngredientsById(input);
+const getNames = async () => {
+    return await findIngredientNames();
 };
 
-const getByName = async (input) => {
-    return await findIngredientsByName(input);
+const getModifiers = async () => {
+    return await findIngredientModifiers();
+};
+
+const getProfessions = async () => {
+    return await findIngredientProfessions();
 };
 
 const getByQuery = async (query) => {
@@ -21,6 +23,6 @@ const getByQuery = async (query) => {
 };
 
 module.exports = {
-    getAll, getById, getByName, getByQuery,
+    getAll, getNames, getByQuery, getModifiers, getProfessions
 };
 

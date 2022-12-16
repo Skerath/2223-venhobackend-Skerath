@@ -39,33 +39,26 @@ parseQuery.validationScheme = {
     }),
 };
 
-const getIngredientById = async (ctx) => {
-    ctx.body = await ingredientService.getById(ctx.params.id);
+const getIngredientNames = async (ctx) => {
+    ctx.body = await ingredientService.getNames();
 };
 
-getIngredientById.validationScheme = {
-    params: Joi.object({
-        id: INGREDIENT_VALIDATIONS.id,
-    })
+const getIngredientModifiers = async (ctx) => {
+    ctx.body = await ingredientService.getModifiers();
 };
 
-
-const getIngredientsByName = async (ctx) => {
-    ctx.body = await ingredientService.getByName(ctx.params.name);
+const getIngredientProfessions = async (ctx) => {
+    ctx.body = await ingredientService.getProfessions();
 };
 
-getIngredientsByName.validationScheme = {
-    params: Joi.object({
-        name: INGREDIENT_VALIDATIONS.name,
-    })
-};
 
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
     router.get('/', validateQuery(parseQuery.validationScheme), parseQuery); // Query based. If no query, will return all ingredients
-    router.get('/id/:id', validateQuery(getIngredientById.validationScheme), getIngredientById);
-    router.get('/name/:name', validateQuery(getIngredientsByName.validationScheme), getIngredientsByName);
+    router.get('/names', getIngredientNames);
+    router.get('/modifiers', getIngredientModifiers);
+    router.get('/professions', getIngredientProfessions);
 
     app
         .use(router.routes())
