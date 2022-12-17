@@ -19,27 +19,20 @@ const joinIngredientTables = () => {
         .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id);
 };
 
-const findAllIngredients = async () => {
-    return joinIngredientTables()
-        .then(ingredient => {
-            return filterKeys(ingredient);
-        });
-};
-
 const findIngredientModifiers = async () => {
     const knexResults =
         await getKnex()(resourcesTables.resources)
             .distinct('results')
             .crossJoin(getKnex().raw('JSON_TABLE(JSON_KEYS(modifiers), "$[*]" COLUMNS (results VARCHAR(50) PATH "$")) t'))
             .orderBy('results');
-    return knexResults.map(results => results.results);
+    return knexResults.map(result => result.results);
 };
 
 const findIngredientNames = async () => {
     let knexResults =
         await getKnex()(resourcesTables.resources)
             .distinct('name');
-    return knexResults.map(results => results.name);
+    return knexResults.map(result => result.name);
 };
 
 const findIngredientProfessions = async () => {
@@ -48,7 +41,7 @@ const findIngredientProfessions = async () => {
             .distinct('results')
             .crossJoin(getKnex().raw('JSON_TABLE(professions, "$[*]" COLUMNS (results VARCHAR(50) PATH "$")) t'))
             .orderBy('results');
-    return knexResults.map(results => results.results);
+    return knexResults.map(result => result.results);
 };
 
 const findIngredientsByQuery = async (query) => {
@@ -56,7 +49,7 @@ const findIngredientsByQuery = async (query) => {
         .where((builder) => {
             if (query.id) builder.where(resourcesColumns.resources.id, query.id);
             if (query.name) builder.whereILike(resourcesColumns.resources.name, `%${query.name}%`);
-            if (query.tier) builder.where(resourcesColumns.resources.tier, query.tier);
+            if (query.tier) builder.where(resourcesColumns.resources.tier, '<=', query.tier);
             if (query.minlevel) builder.where(resourcesColumns.resources.level, '>=', query.minlevel);
             if (query.maxlevel) builder.where(resourcesColumns.resources.level, '<=', query.maxlevel);
             if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession, resourcesColumns.resources.professions]);
@@ -67,7 +60,6 @@ const findIngredientsByQuery = async (query) => {
 }
 
 module.exports = {
-    findAllIngredients,
     findIngredientsByQuery,
     findIngredientModifiers,
     findIngredientNames,

@@ -2,6 +2,8 @@ const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
 const Joi = require('joi');
 const {validateQuery} = require('./_validation');
+const {getLogger} = require("../core/logging");
+const logger = getLogger();
 
 const INGREDIENT_VALIDATIONS = Object.freeze({
     id: Joi.number().integer().positive().max(999),
@@ -13,18 +15,10 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
     modifier: Joi.string().uppercase().max(50),
 });
 
-
-const getAllIngredients = async (ctx) => {
-    ctx.body = await ingredientService.getAll();
-}
-
 const parseQuery = async (ctx) => {
     const query = ctx.request.query;
-
-    if (Object.keys(query).length === 0)
-        return await getAllIngredients(ctx);
-    else
-        ctx.body = await ingredientService.getByQuery(query);
+    logger.info(`[${new Date()}] Successfully handled query for Ingredient by Query: '${JSON.stringify(ctx.request.query)}'`);
+    ctx.body = await ingredientService.getByQuery(query);
 };
 
 parseQuery.validationScheme = {
@@ -40,14 +34,18 @@ parseQuery.validationScheme = {
 };
 
 const getIngredientNames = async (ctx) => {
+    logger.info(`[${new Date()}] Successfully handled query for Ingredient Names`);
     ctx.body = await ingredientService.getNames();
 };
 
 const getIngredientModifiers = async (ctx) => {
+    logger.info(`[${new Date()}] Successfully handled query for Ingredient Modifiers`);
+
     ctx.body = await ingredientService.getModifiers();
 };
 
 const getIngredientProfessions = async (ctx) => {
+    logger.info(`[${new Date()}] Successfully handled query for Ingredient Positions`);
     ctx.body = await ingredientService.getProfessions();
 };
 
