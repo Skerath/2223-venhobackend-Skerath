@@ -39,7 +39,7 @@ const knexConfig = {
 
 function getKnex() {
     if (!databaseConnection)
-        throw new Error(`Error: cannot invoke database as it has not been initialized.`);
+        throw new Error(`Cannot invoke database as it has not been initialized.`);
     return databaseConnection;
 }
 

@@ -3,7 +3,6 @@ const ingredientService = require("../service/ingredients");
 const Joi = require('joi');
 const {validate} = require('./_validation');
 const {getLogger} = require("../core/logging");
-const logger = getLogger();
 
 const INGREDIENT_VALIDATIONS = Object.freeze({
     id: Joi.number().integer().positive().max(999),
@@ -17,7 +16,6 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
 
 const parseQuery = async (ctx) => {
     const query = ctx.query;
-    logger.info(`[${new Date()}] Successfully handled query for Ingredient by Query: '${JSON.stringify(ctx.request.query)}'`);
     ctx.body = await ingredientService.getByQuery(query);
 };
 
@@ -34,18 +32,15 @@ parseQuery.validationScheme = {
 };
 
 const getIngredientNames = async (ctx) => {
-    logger.info(`[${new Date()}] Successfully handled query for Ingredient Names`);
     ctx.body = await ingredientService.getNames();
 };
 
 const getIngredientModifiers = async (ctx) => {
-    logger.info(`[${new Date()}] Successfully handled query for Ingredient Modifiers`);
 
     ctx.body = await ingredientService.getModifiers();
 };
 
 const getIngredientProfessions = async (ctx) => {
-    logger.info(`[${new Date()}] Successfully handled query for Ingredient Positions`);
     ctx.body = await ingredientService.getProfessions();
 };
 

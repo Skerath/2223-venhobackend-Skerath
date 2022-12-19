@@ -1,10 +1,7 @@
 const {
-    findAllIngredients, findIngredientNames, findIngredientsByQuery, findIngredientModifiers, findIngredientProfessions
+    findIngredientNames, findIngredientsByQuery, findIngredientModifiers, findIngredientProfessions
 } = require('../repository/ingredient');
-
-const getAll = async () => {
-    return findAllIngredients();
-};
+const ServiceError = require("../core/serviceError");
 
 const getNames = async () => {
     return await findIngredientNames();
@@ -19,10 +16,13 @@ const getProfessions = async () => {
 };
 
 const getByQuery = async (query) => {
-    return await findIngredientsByQuery(query);
+    const ingredients = await findIngredientsByQuery(query);
+    if (JSON.stringify(ingredients) === '[]')
+        throw ServiceError.notFound(`There are no ingredients matching the query provided in details.`, {query});
+    return ingredients;
 };
 
 module.exports = {
-    getAll, getNames, getByQuery, getModifiers, getProfessions
+    getNames, getByQuery, getModifiers, getProfessions
 };
 
