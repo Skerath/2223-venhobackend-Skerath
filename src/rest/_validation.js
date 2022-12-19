@@ -5,9 +5,10 @@ const JOI_OPTIONS = {
     allowUnknown: true, // ignore unknown props
     stripUnknown: true, // remove unknown props
     context: true,
+    convert: true,
 }
 
-const validateQuery = (schema) => {
+const validate = (schema) => {
 
     if (!schema)
         schema = {
@@ -17,36 +18,76 @@ const validateQuery = (schema) => {
         };
 
     return (ctx, next) => {
-        const isQuery = !(Object.keys(ctx.request.query).length === 0); // Handle as query or as params request
         const errors = {}
-        if (!Joi.isSchema(schema.params))
-            schema.params = Joi.object(schema.params || {});
+        if (schema.query) {
+            if (!Joi.isSchema(schema.query))
+                schema.query = Joi.object(schema.query);
 
-        const {
-            error: paramsError,
-            value: paramsValue,
-        } = schema.params.validate(
-            isQuery ? ctx.request.query : ctx.params,
-            JOI_OPTIONS);
+            const {
+                error: queryErrors,
+                value: queryValue,
+            } = schema.query.validate(
+                ctx.query,
+                JOI_OPTIONS);
 
-        if (paramsError)
-            errors.params = cleanupJoiError(paramsError);
-        else {
-            if (isQuery)
-                ctx.request.query = paramsValue;
+            if (queryErrors)
+                errors.query = cleanupJoiError(queryErrors);
             else
-                ctx.params = paramsValue;
+                ctx.query = queryValue;
         }
 
-        if (Object.keys(errors).length)
+
+        if (schema.body) {
+            if (!Joi.isSchema(schema.body)) {
+                schema.body = Joi.object(schema.body);
+            }
+
+            const {
+                error: bodyErrors,
+                value: bodyValue,
+            } = schema.body.validate(
+                ctx.request.body,
+                JOI_OPTIONS,
+            );
+
+            if (bodyErrors) {
+                errors.body = cleanupJoiError(bodyErrors);
+            } else {
+                ctx.request.body = bodyValue;
+            }
+        }
+
+        if (schema.params) {
+            if (!Joi.isSchema(schema.params)) {
+                schema.params = Joi.object(schema.params);
+            }
+
+            const {
+                error: paramsErrors,
+                value: paramsValue,
+            } = schema.params.validate(
+                ctx.params,
+                JOI_OPTIONS,
+            );
+
+            if (paramsErrors) {
+                errors.params = cleanupJoiError(paramsErrors);
+            } else {
+                ctx.params = paramsValue;
+            }
+        }
+
+
+        if (Object.keys(errors).length) {
             ctx.throw(400, 'Validation failed, check details for more information', {
                 code: 'VALIDATION_FAILED',
                 details: errors,
             });
+        }
 
         return next();
     };
-}
+};
 
 
 const cleanupJoiError = (error) => error.details.reduce((resultObj, {
@@ -69,5 +110,5 @@ const cleanupJoiError = (error) => error.details.reduce((resultObj, {
 
 
 module.exports = {
-    validateQuery,
+    validate,
 };

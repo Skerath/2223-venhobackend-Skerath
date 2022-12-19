@@ -1,7 +1,7 @@
 const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
 const Joi = require('joi');
-const {validateQuery} = require('./_validation');
+const {validate} = require('./_validation');
 const {getLogger} = require("../core/logging");
 const logger = getLogger();
 
@@ -16,13 +16,13 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
 });
 
 const parseQuery = async (ctx) => {
-    const query = ctx.request.query;
+    const query = ctx.query;
     logger.info(`[${new Date()}] Successfully handled query for Ingredient by Query: '${JSON.stringify(ctx.request.query)}'`);
     ctx.body = await ingredientService.getByQuery(query);
 };
 
 parseQuery.validationScheme = {
-    params: Joi.object({
+    query: Joi.object({
         id: INGREDIENT_VALIDATIONS.id,
         name: INGREDIENT_VALIDATIONS.name,
         tier: INGREDIENT_VALIDATIONS.tier,
@@ -53,7 +53,7 @@ const getIngredientProfessions = async (ctx) => {
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
-    router.get('/', validateQuery(parseQuery.validationScheme), parseQuery); // Query based. If no query, will return all ingredients
+    router.get('/', validate(parseQuery.validationScheme), parseQuery); // Query based. If no query, will return all ingredients
     router.get('/names', getIngredientNames);
     router.get('/modifiers', getIngredientModifiers);
     router.get('/professions', getIngredientProfessions);

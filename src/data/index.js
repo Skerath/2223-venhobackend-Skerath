@@ -63,7 +63,6 @@ async function initKnex() {
         logger.error('Error while migrating database', {
             error,
         });
-        throw new Error('Migrations failed, check the logs');
     }
 
     if (isDevelopment) {
@@ -71,7 +70,6 @@ async function initKnex() {
             await getKnex().seed.run();
             logger.info(`Successfully loaded latest seed on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
         } catch (error) {
-            console.log(error);
             logger.error('Error while seeding database', {error,});
         }
     }
