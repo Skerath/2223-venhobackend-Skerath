@@ -1,6 +1,7 @@
 module.exports = {
-  log: {
-    level: 'info',
-    disabled: true,
-  },
+    port: 9000,
+    log: {
+        level: 'info',
+        disabled: true,
+    },
 };
