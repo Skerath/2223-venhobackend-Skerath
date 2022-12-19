@@ -17,7 +17,7 @@ const getProfessions = async () => {
 
 const getByQuery = async (query) => {
     const ingredients = await findIngredientsByQuery(query);
-    if (JSON.stringify(ingredients) === '[]')
+    if (ingredients.length === 0)
         throw ServiceError.notFound(`There are no ingredients matching the query provided in details.`, {query});
     return ingredients;
 };
