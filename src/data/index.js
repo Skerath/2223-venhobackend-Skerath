@@ -73,8 +73,18 @@ async function initKnex() {
             logger.error('Error while seeding database', {error,});
         }
     }
-
 }
+
+async function shutdownKnex() {
+
+    logger.info('Shutting down database connection');
+
+    await databaseConnection.destroy();
+    databaseConnection = null;
+
+    logger.info('Database connection closed');
+}
+
 
 // Tables
 const resourcesTables = Object.freeze({
@@ -120,6 +130,7 @@ const resourcesColumns = Object.freeze({
 
 module.exports = {
     initKnex,
+    shutdownKnex,
     getKnex,
     resourcesTables,
     resourcesColumns,
