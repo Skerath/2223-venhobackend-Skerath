@@ -36,6 +36,16 @@ getItems.validationScheme = {
     }),
 }
 
+const getItemsByUserName = async (ctx) => {
+    ctx.body = await itemService.getByName(ctx.params.name);
+}
+
+getItemsByUserName.validationScheme = {
+    params: Joi.object({
+        name: Joi.string().max(60).replace('_', ' '),
+    }),
+}
+
 putItem.validationScheme = {
     query: Joi.object({
         name: Joi.string().required().max(60).replace('_', ' '),
@@ -103,6 +113,7 @@ putItem.validationScheme = {
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
     router.get('/', validate(getItems.validationScheme), getItems);
+    router.get('/name/:name', validate(getItemsByUserName.validationScheme), getItemsByUserName);
     router.put('/', await validateAsync(putItem.validationScheme,), putItem); // Query based. If no query, will return all ingredients
 
     app

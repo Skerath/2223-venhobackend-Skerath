@@ -140,7 +140,8 @@ const itemColumns = Object.freeze({
         name: 'display_name',
         type: 'type',
         ingredient: 'ingredient_used',
-        belongsToUserId: 'owner_auth0id'
+        belongsToUserId: 'owner_auth0id',
+        databaseId: 'database_id',
     }
 });
 

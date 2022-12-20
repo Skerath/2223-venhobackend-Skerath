@@ -1,6 +1,7 @@
 const {
     createItem,
-    findItemsByQuery
+    findItemsByQuery,
+    findItemsByUserName
 } = require('../repository/item');
 const ServiceError = require("../core/serviceError");
 
@@ -15,8 +16,16 @@ const getByQuery = async (query) => {
     return ingredients;
 };
 
+const getByName = async (input) => {
+    const items = await findItemsByUserName(input);
+    if (items.length === 0)
+        throw ServiceError.notFound(`There are no items matching the input provided in details.`, {input});
+    return items;
+};
+
 module.exports = {
     getByQuery,
-    putByQuery
+    putByQuery,
+    getByName
 };
 

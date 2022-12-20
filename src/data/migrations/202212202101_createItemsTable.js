@@ -7,6 +7,7 @@ const {
 module.exports = {
     up: async (knex) => {
         await knex.schema.createTable('Items', (table) => {
+            table.increments(itemColumns.items.databaseId).unsigned();
             table.string(itemColumns.items.name, 60);
             table.string(itemColumns.items.type);
             table.integer(itemColumns.items.ingredient).unsigned();
