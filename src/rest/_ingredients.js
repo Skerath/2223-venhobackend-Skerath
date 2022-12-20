@@ -2,7 +2,6 @@ const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
 const Joi = require('joi');
 const {validate} = require('./_validation');
-const {getLogger} = require("../core/logging");
 
 const INGREDIENT_VALIDATIONS = Object.freeze({
     id: Joi.number().integer().positive().max(999),

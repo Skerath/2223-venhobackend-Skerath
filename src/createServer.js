@@ -41,7 +41,6 @@ async function createServer() {
 
         try {
             await next();
-
             logger.info(`Result was [${ctx.status}] for ${ctx.method} ${ctx.url}`,
             );
         } catch (error) {

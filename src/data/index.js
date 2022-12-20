@@ -8,11 +8,11 @@ const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
 
-const DATABASE_HOSTNAME = 'localhost',
-    DATABASE_PORT = 3306,
-    DATABASE_USERNAME = 'dbdev',
-    DATABASE_NAME = 'venho_dev',
-    DATABASE_PASSWORD = 'dbdev',
+const DATABASE_HOSTNAME = 'vichogent.be',
+    DATABASE_PORT = 40043,
+    DATABASE_USERNAME = '181905mc',
+    DATABASE_NAME = '181905mc',
+    DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
     isDevelopment = NODE_ENV === 'development';
 
 // Connection
@@ -27,14 +27,14 @@ const knexConfig = {
         password: DATABASE_PASSWORD,
         insecureAuth: isDevelopment,
     },
-    migrations: {
-        tableName: 'knex_meta',
-        directory: 'src/data/migrations',
-    },
-
-    seeds: {
-        directory: 'src/data/seeds',
-    },
+    // migrations: {
+    //     tableName: 'knex_meta',
+    //     directory: 'src/data/migrations',
+    // },
+    //
+    // seeds: {
+    //     directory: 'src/data/seeds',
+    // },
 };
 
 function getKnex() {

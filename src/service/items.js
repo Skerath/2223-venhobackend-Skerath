@@ -1,9 +1,9 @@
 const {
-    findIngredientNames, findIngredientsByQuery, findIngredientModifiers, findIngredientProfessions
+    checkPosibility, findIngredientsByQuery, findIngredientModifiers, findIngredientProfessions
 } = require('../repository/ingredient');
 const ServiceError = require("../core/serviceError");
 
-const getNames = async () => {
+const getCheckPosibility = async () => {
     return await findIngredientNames();
 };
 
@@ -23,6 +23,6 @@ const getByQuery = async (query) => {
 };
 
 module.exports = {
-    getNames, getByQuery, getModifiers, getProfessions,
+    getByQuery, getModifiers, getProfessions
 };
 
