@@ -24,12 +24,10 @@ const findIngredientByName = async (query) => {
         .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
         .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id)
         .whereILike(resourcesColumns.resources.name, query.name))[0];
-    if (ingredients) {
+    if (ingredients)
         return removeUnneededKeys(ingredients);
-    }
-    else {
+    else
         return [];
-    }
 }
 
 const findIngredientNames = async () => {
@@ -64,5 +62,9 @@ const findIngredientsByQuery = async (query) => {
 }
 
 module.exports = {
-    findIngredientsByQuery, findIngredientModifiers, findIngredientNames, findIngredientProfessions, findIngredientByName,
+    findIngredientsByQuery,
+    findIngredientModifiers,
+    findIngredientNames,
+    findIngredientProfessions,
+    findIngredientByName,
 };

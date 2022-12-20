@@ -80,8 +80,6 @@ checkPossibility.validationScheme = {
 
             return obj;
         }
-    }).messages({
-        "any.invalid": `This ingredient is not suited for this item type's profession`,
     }),
 }
 

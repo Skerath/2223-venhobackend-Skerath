@@ -6,7 +6,7 @@ const installItemRouters = require('./_items');
 module.exports = async (app) => {
     const router = new Router();
     installIngredientRouters(app);
-        await installItemRouters(app);
+    await installItemRouters(app);
 
     app.use(router.routes());
     app.use(router.allowedMethods);

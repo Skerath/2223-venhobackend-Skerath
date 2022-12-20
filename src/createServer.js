@@ -69,7 +69,7 @@ async function createServer() {
             const logger = getLogger();
 
 
-            if (error.details ? error.details[0].context.error !== 'VALIDATION_FAILED' : true)
+            if (!error instanceof ValidationError)
                 logger.error('Error occured while handling a request', {
                     error: serializeError(error),
                 });
@@ -82,12 +82,17 @@ async function createServer() {
                 stack: NODE_ENV !== 'production' ? error.stack : undefined,
             };
 
-            if (error instanceof ServiceError || error instanceof ValidationError) {
+            if (error instanceof ValidationError) {
+                if (error.details[0].context.error === "VALIDATION_FAILED")
+                    statusCode = 404;
+            }
+
+            if (error instanceof ServiceError) {
                 if (error.isNotFound) {
                     statusCode = 404;
                 }
 
-                if (error.isValidationFailed || error.details ?  error.details[0].context.error === "VALIDATION_FAILED" : false) {
+                if (error.isValidationFailed) {
                     statusCode = 400;
                 }
 
