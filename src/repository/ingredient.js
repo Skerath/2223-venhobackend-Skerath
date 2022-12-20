@@ -18,6 +18,20 @@ const findIngredientModifiers = async () => {
     return knexResults.map(result => result.results);
 };
 
+const findIngredientByName = async (query) => {
+    const ingredients = (await getKnex()(resourcesTables.resources)
+        .leftJoin(resourcesTables.itemIdentifiers, resourcesColumns.resources.id, resourcesColumns.itemOnlyIdentifiers.id)
+        .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
+        .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id)
+        .whereILike(resourcesColumns.resources.name, query.name))[0];
+    if (ingredients) {
+        return removeUnneededKeys(ingredients);
+    }
+    else {
+        return [];
+    }
+}
+
 const findIngredientNames = async () => {
     let knexResults = await getKnex()(resourcesTables.resources)
         .distinct('name');
@@ -50,5 +64,5 @@ const findIngredientsByQuery = async (query) => {
 }
 
 module.exports = {
-    findIngredientsByQuery, findIngredientModifiers, findIngredientNames, findIngredientProfessions,
+    findIngredientsByQuery, findIngredientModifiers, findIngredientNames, findIngredientProfessions, findIngredientByName,
 };

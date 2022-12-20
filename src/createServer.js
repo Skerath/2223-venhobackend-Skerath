@@ -13,6 +13,7 @@ const installRestRoutes = require('./rest');
 const {initKnex, shutdownKnex} = require("./data");
 const {serializeError} = require("serialize-error");
 const ServiceError = require("./core/serviceError");
+const {ValidationError} = require("joi");
 
 const logger = getLogger();
 
@@ -66,24 +67,27 @@ async function createServer() {
             }
         } catch (error) {
             const logger = getLogger();
-            logger.error('Error occured while handling a request', {
-                error: serializeError(error),
-            });
+
+
+            if (error.details ? error.details[0].context.error !== 'VALIDATION_FAILED' : true)
+                logger.error('Error occured while handling a request', {
+                    error: serializeError(error),
+                });
+
             let statusCode = error.status || 500;
             let errorBody = {
-                code: error.code || 'INTERNAL_SERVER_ERROR',
+                code: error.code || error.details ? error.details[0].context.error : 'INTERNAL_SERVER_ERROR',
                 message: error.message,
                 details: error.details || {},
                 stack: NODE_ENV !== 'production' ? error.stack : undefined,
             };
 
-
-            if (error instanceof ServiceError) {
+            if (error instanceof ServiceError || error instanceof ValidationError) {
                 if (error.isNotFound) {
                     statusCode = 404;
                 }
 
-                if (error.isValidationFailed) {
+                if (error.isValidationFailed || error.details ?  error.details[0].context.error === "VALIDATION_FAILED" : false) {
                     statusCode = 400;
                 }
 
