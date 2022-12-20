@@ -76,33 +76,33 @@ async function createServer() {
 
             let statusCode = error.status || 500;
             let errorBody = {
-                code: error.code || error.details ? error.details[0].context.error : 'INTERNAL_SERVER_ERROR',
+                code: error.code || ((error.details) ? error.details[0].context.error : 'INTERNAL_SERVER_ERROR'),
                 message: error.message,
                 details: error.details || {},
                 stack: NODE_ENV !== 'production' ? error.stack : undefined,
             };
 
             if (error instanceof ValidationError) {
-                if (error.details[0].context.error === "VALIDATION_FAILED")
-                    statusCode = 404;
+                if (error.details) {
+
+                    if (error.details[0].context.error === "VALIDATION_FAILED") {
+                        statusCode = 404;
+                    }
+                }
             }
 
             if (error instanceof ServiceError) {
-                if (error.isNotFound) {
+                if (error.isNotFound)
                     statusCode = 404;
-                }
 
-                if (error.isValidationFailed) {
+                if (error.isValidationFailed)
                     statusCode = 400;
-                }
 
-                if (error.isUnauthorized) {
+                if (error.isUnauthorized)
                     statusCode = 401;
-                }
 
-                if (error.isForbidden) {
+                if (error.isForbidden)
                     statusCode = 403;
-                }
             }
             ctx.status = statusCode;
             ctx.body = errorBody;
