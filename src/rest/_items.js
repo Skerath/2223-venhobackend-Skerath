@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const itemService = require("../service/items");
 const Router = require("@koa/router");
-const {validateAsync} = require("./_validation");
+const {validateAsync, validate} = require("./_validation");
 const {findIngredientByName} = require("../repository/ingredient");
 
 const allowedTypes = {
@@ -22,6 +22,19 @@ const putItem = async (ctx) => {
     const query = ctx.query;
     ctx.body = await itemService.putByQuery(query);
 };
+
+const getItems = async (ctx) => {
+    const query = ctx.query;
+    ctx.body = await itemService.getByQuery(query);
+};
+
+getItems.validationScheme = {
+    query: Joi.object({
+        name: Joi.string().max(60).replace('_', ' '),
+        type: Joi.string().uppercase().max(20),
+        ingredient: Joi.string().max(60).replace('_', ' '),
+    }),
+}
 
 putItem.validationScheme = {
     query: Joi.object({
@@ -89,7 +102,8 @@ putItem.validationScheme = {
 
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
-    router.get('/', await validateAsync(putItem.validationScheme,), putItem); // Query based. If no query, will return all ingredients
+    router.get('/', validate(getItems.validationScheme), getItems);
+    router.put('/', await validateAsync(putItem.validationScheme,), putItem); // Query based. If no query, will return all ingredients
 
     app
         .use(router.routes())
