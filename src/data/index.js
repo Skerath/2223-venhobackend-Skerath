@@ -8,11 +8,11 @@ const retryConnection = 5000;
 const knex = require('knex');
 const NODE_ENV = config.get('env');
 
-const DATABASE_HOSTNAME = 'vichogent.be',
-    DATABASE_PORT = 40043,
-    DATABASE_USERNAME = '181905mc',
-    DATABASE_NAME = '181905mc',
-    DATABASE_PASSWORD = 'jRIPQ74Qw1EoZwjT9BPx',
+const DATABASE_HOSTNAME = 'localhost',
+    DATABASE_PORT = 3306,
+    DATABASE_USERNAME = 'dbdev',
+    DATABASE_NAME = 'venho_dev',
+    DATABASE_PASSWORD = 'dbdev',
     isDevelopment = NODE_ENV === 'development';
 
 // Connection
@@ -27,14 +27,14 @@ const knexConfig = {
         password: DATABASE_PASSWORD,
         insecureAuth: isDevelopment,
     },
-    // migrations: {
-    //     tableName: 'knex_meta',
-    //     directory: 'src/data/migrations',
-    // },
-    //
-    // seeds: {
-    //     directory: 'src/data/seeds',
-    // },
+    migrations: {
+        tableName: 'knex_meta',
+        directory: 'src/data/migrations',
+    },
+
+    seeds: {
+        directory: 'src/data/seeds',
+    },
 };
 
 function getKnex() {
@@ -58,7 +58,6 @@ async function initKnex() {
 
     try {
         await getKnex().migrate.latest();
-        logger.info(`Successfully migrated latest schema layout on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
     } catch (error) {
         logger.error('Error while migrating database', {
             error,
@@ -68,7 +67,6 @@ async function initKnex() {
     if (isDevelopment) {
         try {
             await getKnex().seed.run();
-            logger.info(`Successfully loaded latest seed on '${DATABASE_HOSTNAME}:${DATABASE_PORT}'`);
         } catch (error) {
             logger.error('Error while seeding database', {error,});
         }
@@ -92,6 +90,14 @@ const resourcesTables = Object.freeze({
     consumableIdentifiers: 'ConsumableOnlyIdentifiers',
     itemIdentifiers: 'ItemOnlyIdentifiers',
     ingredientPositionModifier: 'IngredientPositionModifiers',
+})
+
+const itemTables = Object.freeze({
+    items: 'Items'
+})
+
+const userTables = Object.freeze({
+    users: 'Users'
 })
 
 const resourcesColumns = Object.freeze({
@@ -128,10 +134,31 @@ const resourcesColumns = Object.freeze({
     }
 });
 
+const itemColumns = Object.freeze({
+    items: {
+        id: 'itemId',
+        name: 'display_name',
+        type: 'type',
+        ingredient: 'ingredient_used',
+        belongsToUserId: 'owner_auth0id'
+    }
+});
+
+const userColumns = Object.freeze({
+    users: {
+        userId: 'auth0id',
+        userName: 'user_name',
+    }
+})
+
 module.exports = {
     initKnex,
     shutdownKnex,
     getKnex,
     resourcesTables,
     resourcesColumns,
+    itemTables,
+    itemColumns,
+    userTables,
+    userColumns
 }

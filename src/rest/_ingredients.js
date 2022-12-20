@@ -13,12 +13,12 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
     modifier: Joi.string().uppercase().max(50),
 });
 
-const parseQuery = async (ctx) => {
+const getByQuery = async (ctx) => {
     const query = ctx.query;
     ctx.body = await ingredientService.getByQuery(query);
 };
 
-parseQuery.validationScheme = {
+getByQuery.validationScheme = {
     query: Joi.object({
         id: INGREDIENT_VALIDATIONS.id,
         name: INGREDIENT_VALIDATIONS.name,
@@ -47,7 +47,7 @@ const getIngredientProfessions = async (ctx) => {
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
-    router.get('/', validate(parseQuery.validationScheme), parseQuery); // Query based. If no query, will return all ingredients
+    router.get('/', validate(getByQuery.validationScheme), getByQuery); // Query based. If no query, will return all ingredients
     router.get('/names', getIngredientNames);
     router.get('/modifiers', getIngredientModifiers);
     router.get('/professions', getIngredientProfessions);

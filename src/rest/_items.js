@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const ingredientService = require("../service/ingredients");
+const itemService = require("../service/items");
 const Router = require("@koa/router");
 const {validateAsync} = require("./_validation");
 const {findIngredientByName} = require("../repository/ingredient");
@@ -18,12 +18,12 @@ const allowedTypes = {
 let types = [];
 Object.keys(allowedTypes).forEach(key => allowedTypes[key].forEach(type => types.push(type)));
 
-const checkPossibility = async (ctx) => {
+const putItem = async (ctx) => {
     const query = ctx.query;
-    ctx.body = await ingredientService.getByQuery(query);
+    ctx.body = await itemService.putByQuery(query);
 };
 
-checkPossibility.validationScheme = {
+putItem.validationScheme = {
     query: Joi.object({
         name: Joi.string().required().max(60).replace('_', ' '),
         type: Joi.string()
@@ -66,10 +66,9 @@ checkPossibility.validationScheme = {
             const professions = matchingIngredient.professions;
 
             let isMatching = false;
-            professions.forEach(profession => { // use .some ? else if (!ismatching) =
-                if (allowedTypes[profession].includes(type)) {
+            professions.some(profession => {
+                if (allowedTypes[profession].includes(type))
                     isMatching = true;
-                }
             })
 
             if (!isMatching) // if the ingredient is not for type of item
@@ -90,7 +89,7 @@ checkPossibility.validationScheme = {
 
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
-    router.get('/', await validateAsync(checkPossibility.validationScheme, checkPossibility.JSON_OPTIONS), checkPossibility); // Query based. If no query, will return all ingredients
+    router.get('/', await validateAsync(putItem.validationScheme,), putItem); // Query based. If no query, will return all ingredients
 
     app
         .use(router.routes())
