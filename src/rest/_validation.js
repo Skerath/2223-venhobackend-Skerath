@@ -8,7 +8,7 @@ const JOI_OPTIONS = {
     convert: true,
 }
 
-const validate = (schema) => {
+const validate = (schema, Joi_Options) => {
 
     if (!schema)
         schema = {
@@ -16,6 +16,10 @@ const validate = (schema) => {
             body: {},
             params: {},
         };
+
+    if (!Joi_Options)  {
+        Joi_Options = JOI_OPTIONS;
+    }
 
     return (ctx, next) => {
         const errors = {}
@@ -28,7 +32,7 @@ const validate = (schema) => {
                 value: queryValue,
             } = schema.query.validate(
                 ctx.query,
-                JOI_OPTIONS);
+                Joi_Options);
 
             if (queryErrors)
                 errors.query = cleanupJoiError(queryErrors);
@@ -47,7 +51,7 @@ const validate = (schema) => {
                 value: bodyValue,
             } = schema.body.validate(
                 ctx.request.body,
-                JOI_OPTIONS,
+                Joi_Options,
             );
 
             if (bodyErrors) {
@@ -67,7 +71,7 @@ const validate = (schema) => {
                 value: paramsValue,
             } = schema.params.validate(
                 ctx.params,
-                JOI_OPTIONS,
+                Joi_Options,
             );
 
             if (paramsErrors) {
