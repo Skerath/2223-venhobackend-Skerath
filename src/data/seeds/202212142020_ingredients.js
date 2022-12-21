@@ -2,6 +2,7 @@ module.exports = {
 
     seed: async (knex) => {
 
+        await knex('Items').delete();
         await knex('ConsumableOnlyIdentifiers').delete();
         await knex('ItemOnlyIdentifiers').delete();
         await knex('IngredientPositionModifiers').delete();

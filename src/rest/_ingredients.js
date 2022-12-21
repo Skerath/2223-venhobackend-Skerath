@@ -2,6 +2,7 @@ const Router = require('@koa/router');
 const ingredientService = require("../service/ingredients");
 const Joi = require('joi');
 const {validate} = require('./_validation');
+const {hasPermission, permissions} = require("../core/auth");
 
 const INGREDIENT_VALIDATIONS = Object.freeze({
     id: Joi.number().integer().positive(),
@@ -47,10 +48,10 @@ const getIngredientProfessions = async (ctx) => {
 module.exports = (app) => {
 
     const router = new Router({prefix: '/api/ingredients'});
-    router.get('/', validate(getByQuery.validationScheme), getByQuery); // Query based. If no query, will return all ingredients
-    router.get('/names', getIngredientNames);
-    router.get('/modifiers', getIngredientModifiers);
-    router.get('/professions', getIngredientProfessions);
+    router.get('/', hasPermission(permissions.read), validate(getByQuery.validationScheme), getByQuery); // Query based. If no query, will return all ingredients
+    router.get('/names', hasPermission(permissions.read), getIngredientNames);
+    router.get('/modifiers', hasPermission(permissions.read), getIngredientModifiers);
+    router.get('/professions', hasPermission(permissions.read), getIngredientProfessions);
 
     app
         .use(router.routes())

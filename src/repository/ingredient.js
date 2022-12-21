@@ -23,7 +23,7 @@ const findIngredientByName = async (query) => {
         .leftJoin(resourcesTables.itemIdentifiers, resourcesColumns.resources.id, resourcesColumns.itemOnlyIdentifiers.id)
         .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
         .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id)
-        .whereILike(resourcesColumns.resources.name, query.name))[0];
+        .whereILike(resourcesColumns.resources.name, `%${query.name}%`))[0];
     if (ingredients)
         return removeUnneededKeys(ingredients);
     else

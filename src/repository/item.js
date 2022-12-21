@@ -18,17 +18,14 @@ const mapItem = (object, ingredientUsed) => {
     };
 }
 
-const findItemsByQuery = async (query) => {
-    let matchingItem
-    if (query.ingredient)
-        matchingItem = await findIngredientByName({name: query.ingredient})
+const findItemsByQuery = async (query, matchingItem) => {
 
     const items = await getKnex()(itemTables.items)
         .leftJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId)
         .where((builder) => {
             if (query.name) builder.whereILike(itemColumns.items.name, `%${query.name}%`);
             if (query.type) builder.whereILike(itemColumns.items.type, `%${query.type}%`);
-            if (query.ingredient) builder.where(itemColumns.items.ingredient, matchingItem.resourceID);
+            if (query.ingredient && matchingItem) builder.where(itemColumns.items.ingredient, matchingItem.resourceID);
             if (query.owner) builder.whereILike(userColumns.users.userName, `%${query.owner}%`)
         })
 

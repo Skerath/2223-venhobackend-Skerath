@@ -4,6 +4,7 @@ const {
     deleteItem, findItemsByIdAndAuth0Id, updateItem
 } = require('../repository/item');
 const ServiceError = require("../core/serviceError");
+const {findIngredientByName} = require("../repository/ingredient");
 
 const putByQuery = async (query, auth0id) => {
 
@@ -22,7 +23,16 @@ const putByQuery = async (query, auth0id) => {
 };
 
 const getByQuery = async (query) => {
-    const ingredients = await findItemsByQuery(query);
+    let matchingItem;
+    console.log(query.ingredient)
+
+    if (query.ingredient) {
+        matchingItem = await findIngredientByName({name: query.ingredient})
+        if (matchingItem.length === 0)
+            throw ServiceError.notFound(`There are no items matching the query provided in details.`, {query});
+    }
+
+    const ingredients = await findItemsByQuery(query, matchingItem);
     if (ingredients.length === 0)
         throw ServiceError.notFound(`There are no items matching the query provided in details.`, {query});
     return ingredients;

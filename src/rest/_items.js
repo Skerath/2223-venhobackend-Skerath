@@ -70,7 +70,7 @@ getItems.validationScheme = {
     query: Joi.object({
         name: Joi.string().max(60).replace('_', ' '),
         type: Joi.string().uppercase().max(20),
-        ingredient: Joi.string().max(60).replace('_', ' '),
+        ingredient: Joi.string().max(60).replace('_', ' '), // TODO use custom validations here too
         owner: Joi.string().max(60).replace('_', ' ')
     }),
 }
