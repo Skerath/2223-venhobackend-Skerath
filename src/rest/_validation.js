@@ -5,7 +5,6 @@ const JOI_OPTIONS = {
     allowUnknown: true, // ignore unknown props
     stripUnknown: true, // remove unknown props
     context: true,
-    convert: true,
 }
 
 const validate = (schema, Joi_Options) => {
@@ -17,7 +16,7 @@ const validate = (schema, Joi_Options) => {
             params: {},
         };
 
-    if (!Joi_Options)  {
+    if (!Joi_Options) {
         Joi_Options = JOI_OPTIONS;
     }
 
@@ -110,15 +109,15 @@ const validateAsync = async (schema) => {
 
             const {
                 error: queryErrors,
-                value: queryValue,
+                ...queryValue
             } = await schema.query.validateAsync(
-                ctx.query,
+                ctx.request.query,
                 JOI_OPTIONS);
 
             if (queryErrors)
                 errors.query = cleanupJoiError(queryErrors);
             else
-                ctx.query = queryValue;
+                ctx.request.query = queryValue;
         }
 
 

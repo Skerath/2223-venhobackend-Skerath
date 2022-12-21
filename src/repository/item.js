@@ -42,8 +42,17 @@ const findItemsByQuery = async (query) => {
     return mappedItems;
 };
 
-const createItem = async (query) => {
-// TODO
+const createItem = async (query, auth0id) => {
+
+    const matchingItem = await findIngredientByName({name: query.ingredient}) // Todo this is being done too much
+
+    await getKnex()(itemTables.items)
+        .insert({
+            display_name: query.name,
+            type: query.type,
+            ingredient_used: matchingItem.resourceID,
+            owner_auth0id: auth0id,
+        });
 };
 
 const findItemsByUserName = async (input) => {

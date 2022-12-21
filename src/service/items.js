@@ -5,8 +5,8 @@ const {
 } = require('../repository/item');
 const ServiceError = require("../core/serviceError");
 
-const putByQuery = async () => {
-    return await createItem();
+const putByQuery = async (query, auth0id) => {
+    return await createItem(query, auth0id);
 };
 
 const getByQuery = async (query) => {

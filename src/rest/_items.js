@@ -1,8 +1,10 @@
 const Joi = require('joi');
 const itemService = require("../service/items");
+const userService = require("../service/users")
 const Router = require("@koa/router");
 const {validateAsync, validate} = require("./_validation");
 const {findIngredientByName} = require("../repository/ingredient");
+const {addUserInfo} = require("../core/auth");
 
 const allowedTypes = {
     "ARMOURING": ["HELMET", "CHESTPLATE"],
@@ -18,9 +20,20 @@ const allowedTypes = {
 let types = [];
 Object.keys(allowedTypes).forEach(key => allowedTypes[key].forEach(type => types.push(type)));
 
-const putItem = async (ctx) => {
-    const query = ctx.query;
-    ctx.body = await itemService.putByQuery(query);
+const createItem = async (ctx) => {
+    let userId = 0
+    try {
+        const user = await userService.getByAuth0Id(ctx.state.user.sub);
+        userId = user.id;
+    } catch (err) {
+        await addUserInfo(ctx);
+        userId = await userService.register({
+            auth0id: ctx.state.user.sub,
+            name: ctx.state.user.name,
+        });
+    }
+    ctx.body = await itemService.putByQuery(ctx.request.query, userId);
+    ctx.status = 201
 };
 
 const getItems = async (ctx) => {
@@ -46,7 +59,7 @@ getItemsByUserName.validationScheme = {
     }),
 }
 
-putItem.validationScheme = {
+createItem.validationScheme = {
     query: Joi.object({
         name: Joi.string().required().max(60).replace('_', ' '),
         type: Joi.string()
@@ -114,7 +127,7 @@ module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
     router.get('/', validate(getItems.validationScheme), getItems);
     router.get('/name/:name', validate(getItemsByUserName.validationScheme), getItemsByUserName);
-    router.put('/', await validateAsync(putItem.validationScheme,), putItem); // Query based. If no query, will return all ingredients
+    router.post('/', await validateAsync(createItem.validationScheme), createItem); // Query based. If no query, will return all ingredients
 
     app
         .use(router.routes())

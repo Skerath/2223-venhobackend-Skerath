@@ -1,13 +1,15 @@
 const jwksrsa = require('jwks-rsa');
 const config = require('config');
 const {getLogger} = require('./logging');
-const jwt = require("koa-jwt"); // Winston logging
+const jwt = require("koa-jwt");
 const logger = getLogger();
+const axios = require('axios');
+const AUTH_USER_INFO = config.get('auth.userInfo');
 
 function getJwtSecret() {
     try {
         let secretFunction = jwksrsa.koaJwtSecret({
-            jwksUri: config.get('auth.jwksUri'), // 👈
+            jwksUri: config.get('auth.jwksUri'),
             cache: true,
             cacheMaxEntries: 5,
         });
@@ -37,6 +39,31 @@ function checkJwtToken() {
     }
 }
 
+
+async function addUserInfo(ctx) {
+    const logger = getLogger();
+    try {
+        const token = ctx.headers.authorization;
+        const url = AUTH_USER_INFO;
+        if (token && url && ctx.state.user) {
+            const userInfo = await axios.get(url, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+
+            ctx.state.user = {
+                ...ctx.state.user,
+                ...userInfo.data,
+            };
+        }
+    } catch (error) {
+        logger.error(error);
+        throw error;
+    }
+}
+
+
 module.exports = {
-    checkJwtToken,
+    checkJwtToken, addUserInfo
 };
