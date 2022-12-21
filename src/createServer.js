@@ -123,6 +123,14 @@ async function createServer() {
                 if (error.isForbidden)
                     statusCode = 403;
             }
+
+            if (ctx.state.jwtOriginalError) {
+                statusCode = 401;
+                errorBody.code = 'UNAUTHORIZED';
+                errorBody.message = ctx.state.jwtOriginalError.message;
+                errorBody.details.jwtOriginalError = serializeError(ctx.state.jwtOriginalError);
+            }
+
             ctx.status = statusCode;
             ctx.body = errorBody;
         }

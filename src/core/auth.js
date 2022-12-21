@@ -64,6 +64,32 @@ async function addUserInfo(ctx) {
 }
 
 
+const permissions = Object.freeze({
+    loggedIn: 'loggedIn',
+    read: 'read',
+    write: 'write',
+});
+
+function hasPermission(permission) {
+    return async (ctx, next) => {
+        const logger = getLogger();
+        const user = ctx.state.user;
+        logger.debug(`hasPermission: ${JSON.stringify(user)}`);
+
+        // simply having a user object means they are logged in
+        if (user && permission === permissions.loggedIn) {  // 👈
+            await next();
+        } else if (user && user.permissions && user.permissions.includes(permission)) {
+            await next();
+        } else {
+            ctx.throw(403, 'You are not allowed to view this part of the application', {
+                code: 'FORBIDDEN',
+            });
+        }
+    };
+}
+
+
 module.exports = {
-    checkJwtToken, addUserInfo
+    checkJwtToken, addUserInfo, hasPermission, permissions
 };

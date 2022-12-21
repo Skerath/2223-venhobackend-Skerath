@@ -4,7 +4,7 @@ const userService = require("../service/users")
 const Router = require("@koa/router");
 const {validateAsync, validate} = require("./_validation");
 const {findIngredientByName} = require("../repository/ingredient");
-const {addUserInfo} = require("../core/auth");
+const {addUserInfo, hasPermission, permissions} = require("../core/auth");
 
 const allowedTypes = {
     "ARMOURING": ["HELMET", "CHESTPLATE"],
@@ -127,7 +127,7 @@ module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
     router.get('/', validate(getItems.validationScheme), getItems);
     router.get('/name/:name', validate(getItemsByUserName.validationScheme), getItemsByUserName);
-    router.post('/', await validateAsync(createItem.validationScheme), createItem); // Query based. If no query, will return all ingredients
+    router.post('/', hasPermission(permissions.write), await validateAsync(createItem.validationScheme), createItem); // Query based. If no query, will return all ingredients
 
     app
         .use(router.routes())
