@@ -14,6 +14,8 @@ const {initKnex, shutdownKnex} = require("./data");
 const {serializeError} = require("serialize-error");
 const ServiceError = require("./core/serviceError");
 const {ValidationError} = require("joi");
+const {checkJwtToken} = require("./core/auth");
+const bodyParser = require('koa-bodyparser');
 
 const logger = getLogger();
 
@@ -30,6 +32,23 @@ async function createServer() {
         allowHeaders: ['Accept', 'Content-Type', 'Authorization'],
         maxAge: CORS_AGE,
     }));
+
+    app.use(checkJwtToken());
+
+
+
+    // app.use(async (ctx, next) => {
+    //     const logger = getLogger();
+    //     logger.info("-----------------------------------------------")
+    //     logger.debug(ctx.headers.authorization);
+    //     logger.debug(JSON.stringify(ctx.state.user));
+    //     logger.debug(ctx.state.jwtOriginalError);
+    //     logger.info("-----------------------------------------------")
+    //     await next();
+    // });
+
+
+    app.use(bodyParser());
 
     // Start database
     await initKnex();
