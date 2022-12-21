@@ -20,7 +20,7 @@ const allowedTypes = {
 let types = [];
 Object.keys(allowedTypes).forEach(key => allowedTypes[key].forEach(type => types.push(type)));
 
-const createItem = async (ctx) => {
+const putItem = async (ctx) => {
     let userId = 0
     try {
         const user = await userService.getByAuth0Id(ctx.state.user.sub);
@@ -32,9 +32,34 @@ const createItem = async (ctx) => {
             name: ctx.state.user.name,
         });
     }
-    ctx.body = await itemService.putByQuery(ctx.request.query, userId);
-    ctx.status = 201
+
+    const isNewItem = await itemService.putByQuery(ctx.request.query, userId);
+    ctx.status = isNewItem ? 201 : 204;
 };
+
+
+const deleteItem = async (ctx) => {
+    let userId = 0;
+    try {
+        const user = await userService.getByAuth0Id(ctx.state.user.sub);
+        userId = user.id;
+    } catch (err) {
+        await addUserInfo(ctx);
+        userId = await userService.register({
+            auth0id: ctx.state.user.sub,
+            name: ctx.state.user.name,
+        });
+    }
+    await itemService.deleteById(ctx.params.id, userId)
+    ctx.status = 204
+};
+
+
+deleteItem.validationScheme = {
+    params: Joi.object({
+        id: Joi.number().integer().positive()
+    }),
+}
 
 const getItems = async (ctx) => {
     const query = ctx.query;
@@ -46,21 +71,13 @@ getItems.validationScheme = {
         name: Joi.string().max(60).replace('_', ' '),
         type: Joi.string().uppercase().max(20),
         ingredient: Joi.string().max(60).replace('_', ' '),
+        owner: Joi.string().max(60).replace('_', ' ')
     }),
 }
 
-const getItemsByUserName = async (ctx) => {
-    ctx.body = await itemService.getByName(ctx.params.name);
-}
-
-getItemsByUserName.validationScheme = {
-    params: Joi.object({
-        name: Joi.string().max(60).replace('_', ' '),
-    }),
-}
-
-createItem.validationScheme = {
+putItem.validationScheme = {
     query: Joi.object({
+        id: Joi.number().integer().positive(),
         name: Joi.string().required().max(60).replace('_', ' '),
         type: Joi.string()
             .required()
@@ -126,9 +143,8 @@ createItem.validationScheme = {
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
     router.get('/', validate(getItems.validationScheme), getItems);
-    router.get('/name/:name', validate(getItemsByUserName.validationScheme), getItemsByUserName);
-    router.post('/', hasPermission(permissions.write), await validateAsync(createItem.validationScheme), createItem); // Query based. If no query, will return all ingredients
-
+    router.put('/', await validateAsync(putItem.validationScheme), putItem); // Query based. If no query, will return all ingredients
+    router.del('/:id', validate(deleteItem.validationScheme), deleteItem)
     app
         .use(router.routes())
         .use(router.allowedMethods());

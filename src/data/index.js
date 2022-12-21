@@ -136,7 +136,7 @@ const resourcesColumns = Object.freeze({
 
 const itemColumns = Object.freeze({
     items: {
-        id: 'itemId',
+        id: 'database_id', // Todo this is same as db id?
         name: 'display_name',
         type: 'type',
         ingredient: 'ingredient_used',

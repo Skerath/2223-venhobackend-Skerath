@@ -4,8 +4,6 @@ const {
     itemColumns,
     userTables,
     userColumns,
-    resourcesTables,
-    resourcesColumns
 } = require('../data');
 const {findIngredientByName, findIngredientById} = require("./ingredient");
 
@@ -26,12 +24,13 @@ const findItemsByQuery = async (query) => {
         matchingItem = await findIngredientByName({name: query.ingredient})
 
     const items = await getKnex()(itemTables.items)
+        .leftJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId)
         .where((builder) => {
             if (query.name) builder.whereILike(itemColumns.items.name, `%${query.name}%`);
             if (query.type) builder.whereILike(itemColumns.items.type, `%${query.type}%`);
             if (query.ingredient) builder.where(itemColumns.items.ingredient, matchingItem.resourceID);
+            if (query.owner) builder.whereILike(userColumns.users.userName, `%${query.owner}%`)
         })
-        .rightJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId);
 
     let mappedItems = [];
     for (let i = 0; i < items.length; i++) {
@@ -40,6 +39,28 @@ const findItemsByQuery = async (query) => {
     }
 
     return mappedItems;
+};
+
+// const findItemsById = async (input) => {
+//     const items = await getKnex()(itemTables.items)
+//         .where(itemColumns.items.id, input)
+//         .rightJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId);
+//
+//     let mappedItems = [];
+//     for (let i = 0; i < items.length; i++) {
+//         const matchingItem = await findIngredientById({id: items[i].ingredient_used})
+//         mappedItems.push(mapItem(items[i], matchingItem));
+//     }
+//
+//     return mappedItems;
+// };
+
+const findItemsByIdAndAuth0Id = async (input, auth0id) => {
+    const items = await getKnex()(itemTables.items)
+        .where(itemColumns.items.id, input)
+        .where(itemColumns.items.belongsToUserId, auth0id);
+
+    return items;
 };
 
 const createItem = async (query, auth0id) => {
@@ -55,24 +76,34 @@ const createItem = async (query, auth0id) => {
         });
 };
 
-const findItemsByUserName = async (input) => {
+const updateItem = async (query, auth0id) => {
 
-    let items = await getKnex()(userTables.users)
-        .whereILike(userColumns.users.userName, `%${input}%`)
-        .rightJoin(itemTables.items, userColumns.users.userId, itemColumns.items.belongsToUserId)
-        .rightJoin(resourcesTables.resources, itemColumns.items.ingredient, resourcesColumns.resources.id);
+    const matchingIngredient = await findIngredientByName({name: query.ingredient}) // Todo this is being done too much
 
-    let mappedItems = [];
-    for (let i = 0; i < items.length; i++) {
-        const matchingItem = await findIngredientByName({name: items[i].name})
-        mappedItems.push(mapItem(items[i], matchingItem));
-    }
-
-    return mappedItems;
+    await getKnex()(itemTables.items)
+        .where(itemColumns.items.databaseId, query.id)
+        .where(itemColumns.items.belongsToUserId, auth0id)
+        .update({
+            display_name: query.name,
+            type: query.type,
+            ingredient_used: matchingIngredient.resourceID,
+            owner_auth0id: auth0id,
+        })
 };
+
+const deleteItem = async (dbId, auth0id) => {
+    const gotDeleted = await getKnex()(itemTables.items)
+        .where(itemColumns.items.id, dbId)
+        .where(itemColumns.items.belongsToUserId, auth0id)
+        .del();
+    return gotDeleted;
+};
+
 
 module.exports = {
     createItem,
     findItemsByQuery,
-    findItemsByUserName
+    deleteItem,
+    findItemsByIdAndAuth0Id,
+    updateItem
 };

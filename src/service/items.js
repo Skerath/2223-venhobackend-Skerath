@@ -1,12 +1,24 @@
 const {
     createItem,
     findItemsByQuery,
-    findItemsByUserName
+    deleteItem, findItemsByIdAndAuth0Id, updateItem
 } = require('../repository/item');
 const ServiceError = require("../core/serviceError");
 
 const putByQuery = async (query, auth0id) => {
-    return await createItem(query, auth0id);
+
+    if (!query.id) {
+        await createItem(query, auth0id)
+        return true;
+    }
+
+    const itemFound = await findItemsByIdAndAuth0Id(query.id, auth0id);
+
+    if (itemFound.length === 0)
+        throw ServiceError.notFound('There were no items found of this id belonging to this user.')
+
+    await updateItem(query, auth0id)
+    return false;
 };
 
 const getByQuery = async (query) => {
@@ -16,16 +28,16 @@ const getByQuery = async (query) => {
     return ingredients;
 };
 
-const getByName = async (input) => {
-    const items = await findItemsByUserName(input);
-    if (items.length === 0)
-        throw ServiceError.notFound(`There are no items matching the input provided in details.`, {input});
-    return items;
-};
+const deleteById = async (dbId, userId) => {
+    const deleteSuccessful = await deleteItem(dbId, userId);
+
+    if (!deleteSuccessful)
+        throw ServiceError.notFound(`There is no item with provided id belonging to this user`, {dbId, userId});
+}
 
 module.exports = {
     getByQuery,
     putByQuery,
-    getByName
+    deleteById
 };
 

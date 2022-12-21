@@ -4,7 +4,7 @@ const Joi = require('joi');
 const {validate} = require('./_validation');
 
 const INGREDIENT_VALIDATIONS = Object.freeze({
-    id: Joi.number().integer().positive().max(999),
+    id: Joi.number().integer().positive(),
     name: Joi.string().max(60).replace('_', ' '),
     tier: Joi.number().integer().positive().valid(0, 1, 2, 3),
     minlevel: Joi.number().integer().positive().allow(0),
