@@ -227,8 +227,8 @@ postItem.validationScheme = {
 
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
-    router.get('/id/:id', validate(getItemById.validationScheme), getItemById);
-    router.get('/', validate(getItems.validationScheme), getItems);
+    router.get('/id/:id', hasPermission(permissions.read), validate(getItemById.validationScheme), getItemById);
+    router.get('/', hasPermission(permissions.read), validate(getItems.validationScheme), getItems);
     router.post('/', hasPermission(permissions.write), await validateAsync(postItem.validationScheme), postItem); // Query based. If no query, will return all ingredients
     router.put('/', hasPermission(permissions.write), await validateAsync(putItem.validationScheme), putItem)
     router.del('/id/:id', hasPermission(permissions.write), validate(deleteItem.validationScheme), deleteItem)
