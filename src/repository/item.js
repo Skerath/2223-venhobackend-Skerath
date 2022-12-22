@@ -81,11 +81,10 @@ const updateItem = async (query, auth0id) => {
 };
 
 const deleteItem = async (dbId, auth0id) => {
-    const gotDeleted = await getKnex()(itemTables.items)
+    return getKnex()(itemTables.items)
         .where(itemColumns.items.id, dbId)
         .where(itemColumns.items.belongsToUserId, auth0id)
         .del();
-    return gotDeleted;
 };
 
 

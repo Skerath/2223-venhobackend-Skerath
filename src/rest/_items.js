@@ -20,35 +20,28 @@ const allowedTypes = {
 let types = [];
 Object.keys(allowedTypes).forEach(key => allowedTypes[key].forEach(type => types.push(type)));
 
-const postItem = async (ctx) => {
-    let userId = 0
+const getUserId = async (ctx) => {
     try {
         const user = await userService.getByAuth0Id(ctx.state.user.sub);
-        userId = user.auth0id;
+        return user.auth0id;
     } catch (err) {
         await addUserInfo(ctx);
-        userId = await userService.register({
+        return await userService.register({
             auth0id: ctx.state.user.sub,
             name: ctx.state.user.name,
         });
     }
+}
+
+const postItem = async (ctx) => {
+    const userId = await getUserId(ctx);
 
     await itemService.postByQuery(ctx.request.query, userId);
     ctx.status = 201;
 };
 
 const putItem = async (ctx) => {
-    let userId = 0
-    try {
-        const user = await userService.getByAuth0Id(ctx.state.user.sub);
-        userId = user.auth0id;
-    } catch (err) {
-        await addUserInfo(ctx);
-        userId = await userService.register({
-            auth0id: ctx.state.user.sub,
-            name: ctx.state.user.name,
-        });
-    }
+    const userId = await getUserId(ctx);
     await itemService.putByQuery(ctx.request.query, userId);
     ctx.status = 204;
 };
@@ -120,20 +113,7 @@ putItem.validationScheme = {
 
 
 const deleteItem = async (ctx) => {
-    let userId = 0;
-    try {
-        const user = await userService.getByAuth0Id(ctx.state.user.sub);
-        userId = user.auth0id;
-    } catch (err) {
-        await addUserInfo(ctx);
-        userId = await userService.register({
-            auth0id: ctx.state.user.sub,
-            name: ctx.state.user.name,
-        });
-    }
-
-    console.log("rest id" + ctx.params.id);
-    console.log("rest userid" + userId);
+    const userId = await getUserId(ctx);
     await itemService.deleteById(ctx.params.id, userId)
     ctx.status = 204
 };
@@ -146,7 +126,7 @@ deleteItem.validationScheme = {
 }
 
 const getItemById = async (ctx) => {
-    let userId = 0;
+    let userId;
     try {
         const user = await userService.getByAuth0Id(ctx.state.user.sub);
         userId = user.auth0id;
