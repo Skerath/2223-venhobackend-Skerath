@@ -38,24 +38,12 @@ const findItemsByQuery = async (query, matchingItem) => {
     return mappedItems;
 };
 
-// const findItemsById = async (input) => {
-//     const items = await getKnex()(itemTables.items)
-//         .where(itemColumns.items.id, input)
-//         .rightJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId);
-//
-//     let mappedItems = [];
-//     for (let i = 0; i < items.length; i++) {
-//         const matchingItem = await findIngredientById({id: items[i].ingredient_used})
-//         mappedItems.push(mapItem(items[i], matchingItem));
-//     }
-//
-//     return mappedItems;
-// };
-
 const findItemsByIdAndAuth0Id = async (input, auth0id) => {
+
     const items = await getKnex()(itemTables.items)
+        .where(itemColumns.items.belongsToUserId, auth0id)
         .where(itemColumns.items.id, input)
-        .where(itemColumns.items.belongsToUserId, auth0id);
+        .rightJoin(userTables.users, itemColumns.items.belongsToUserId, userColumns.users.userId);
 
     let mappedItems = [];
     for (let i = 0; i < items.length; i++) {

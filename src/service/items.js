@@ -47,7 +47,7 @@ const deleteById = async (dbId, userId) => {
 const getById = async (dbId, userId) => {
     const item = await findItemsByIdAndAuth0Id(dbId, userId);
 
-    if (!item)
+    if (item.length === 0)
         throw ServiceError.notFound(`There is no item with provided id belonging to this user`, {dbId, userId});
 
     return item;

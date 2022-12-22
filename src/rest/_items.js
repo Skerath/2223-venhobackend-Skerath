@@ -24,7 +24,7 @@ const putItem = async (ctx) => {
     let userId = 0
     try {
         const user = await userService.getByAuth0Id(ctx.state.user.sub);
-        userId = user.id;
+        userId = user.auth0id;
     } catch (err) {
         await addUserInfo(ctx);
         userId = await userService.register({
@@ -65,7 +65,7 @@ const getItemById = async (ctx) => {
     let userId = 0;
     try {
         const user = await userService.getByAuth0Id(ctx.state.user.sub);
-        userId = user.id;
+        userId = user.auth0id;
     } catch (err) {
         await addUserInfo(ctx);
         userId = await userService.register({
@@ -73,7 +73,7 @@ const getItemById = async (ctx) => {
             name: ctx.state.user.name,
         });
     }
-    ctx.body = await itemService.getById(ctx.params.id, userId)
+    ctx.body = await itemService.getById(ctx.params.id, userId);
 };
 
 
@@ -164,10 +164,10 @@ putItem.validationScheme = {
 
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
+    router.get('/id/:id', validate(getItemById.validationScheme), getItemById);
     router.get('/', validate(getItems.validationScheme), getItems);
-    router.get('/:id', validate(getItemById.validationScheme), getItemById);
     router.put('/', hasPermission(permissions.write), await validateAsync(putItem.validationScheme), putItem); // Query based. If no query, will return all ingredients
-    router.del('/:id', validate(deleteItem.validationScheme), deleteItem)
+    router.del('/id/:id', validate(deleteItem.validationScheme), deleteItem)
     app
         .use(router.routes())
         .use(router.allowedMethods());
