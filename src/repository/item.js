@@ -57,7 +57,13 @@ const findItemsByIdAndAuth0Id = async (input, auth0id) => {
         .where(itemColumns.items.id, input)
         .where(itemColumns.items.belongsToUserId, auth0id);
 
-    return items;
+    let mappedItems = [];
+    for (let i = 0; i < items.length; i++) {
+        const matchingItem = await findIngredientById({id: items[i].ingredient_used})
+        mappedItems.push(mapItem(items[i], matchingItem));
+    }
+
+    return mappedItems;
 };
 
 const createItem = async (query, auth0id) => {
@@ -102,5 +108,6 @@ module.exports = {
     findItemsByQuery,
     deleteItem,
     findItemsByIdAndAuth0Id,
-    updateItem
+    findItemsById,
+    updateItem,
 };

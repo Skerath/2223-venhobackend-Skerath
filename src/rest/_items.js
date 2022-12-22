@@ -61,6 +61,28 @@ deleteItem.validationScheme = {
     }),
 }
 
+const getItemById = async (ctx) => {
+    let userId = 0;
+    try {
+        const user = await userService.getByAuth0Id(ctx.state.user.sub);
+        userId = user.id;
+    } catch (err) {
+        await addUserInfo(ctx);
+        userId = await userService.register({
+            auth0id: ctx.state.user.sub,
+            name: ctx.state.user.name,
+        });
+    }
+    ctx.body = await itemService.getById(ctx.params.id, userId)
+};
+
+
+getItemById.validationScheme = {
+    params: Joi.object({
+        id: Joi.number().integer().positive()
+    }),
+}
+
 const getItems = async (ctx) => {
     const query = ctx.query;
     ctx.body = await itemService.getByQuery(query);
@@ -143,7 +165,8 @@ putItem.validationScheme = {
 module.exports = async (app) => {
     const router = new Router({prefix: '/api/items'});
     router.get('/', validate(getItems.validationScheme), getItems);
-    router.put('/', await validateAsync(putItem.validationScheme), putItem); // Query based. If no query, will return all ingredients
+    router.get('/:id', validate(getItemById.validationScheme), getItemById);
+    router.put('/', hasPermission(permissions.write), await validateAsync(putItem.validationScheme), putItem); // Query based. If no query, will return all ingredients
     router.del('/:id', validate(deleteItem.validationScheme), deleteItem)
     app
         .use(router.routes())

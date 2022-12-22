@@ -24,7 +24,6 @@ const putByQuery = async (query, auth0id) => {
 
 const getByQuery = async (query) => {
     let matchingItem;
-    console.log(query.ingredient)
 
     if (query.ingredient) {
         matchingItem = await findIngredientByName({name: query.ingredient})
@@ -45,9 +44,20 @@ const deleteById = async (dbId, userId) => {
         throw ServiceError.notFound(`There is no item with provided id belonging to this user`, {dbId, userId});
 }
 
+const getById = async (dbId, userId) => {
+    const item = await findItemsByIdAndAuth0Id(dbId, userId);
+
+    if (!item)
+        throw ServiceError.notFound(`There is no item with provided id belonging to this user`, {dbId, userId});
+
+    return item;
+}
+
+
 module.exports = {
     getByQuery,
     putByQuery,
-    deleteById
+    deleteById,
+    getById
 };
 

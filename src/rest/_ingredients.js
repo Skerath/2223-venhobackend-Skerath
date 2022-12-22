@@ -9,7 +9,7 @@ const INGREDIENT_VALIDATIONS = Object.freeze({
     name: Joi.string().max(60).replace('_', ' '),
     tier: Joi.number().integer().positive().valid(0, 1, 2, 3),
     minlevel: Joi.number().integer().positive().allow(0),
-    maxlevel: Joi.number().integer().positive(),
+    maxlevel: Joi.number().integer().positive().allow(0),
     profession: Joi.string().uppercase().max(14),
     modifier: Joi.string().uppercase().max(50),
 });
