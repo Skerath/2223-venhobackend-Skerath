@@ -3,11 +3,11 @@
 > Duid aan welke vakken je volgt en vermeld voor deze vakken de link naar jouw GitHub repository. In het geval je slechts één vak volgt, verwijder alle inhoud omtrent het andere vak.
 > Verwijder alle instructies (lijnen die starten met >)
 
-- [ ] Front-end Web Development
-  - [GitHub repository](github.com/HOGENT-Web)
+- [x] Front-end Web Development
+  - [GitHub repository][[(github.com/HOGENT-Web)] ](https://github.com/Web-IV/2223-frontendweb-Skerath)
   - [Online versie](github.com/HOGENT-Web)
-- [ ] Web Services: GITHUB URL
-  - [GitHub repository](github.com/HOGENT-Web)
+- [x] Web Services: GITHUB URL
+  - [GitHub repository][(github.com/HOGENT-Web)](https://github.com/Web-IV/2223-webservices-Skerath)
   - [Online versie](github.com/HOGENT-Web)
 
 **Logingegevens**
@@ -33,34 +33,34 @@
 
 - **componenten**
 
-  - [ ] heeft meerdere componenten - dom & slim (naast login/register)
-  - [ ] definieert constanten (variabelen, functies en componenten) buiten de component
-  - [ ] minstens één form met validatie (naast login/register)
-  - [ ] login systeem (eigen of extern zoals bv. Auth0)
+  - [x] heeft meerdere componenten - dom & slim (naast login/register)
+  - [x] definieert constanten (variabelen, functies en componenten) buiten de component
+  - [x] minstens één form met validatie (naast login/register)
+  - [x] login systeem (eigen of extern zoals bv. Auth0)
 <br />
 
 - **routing**
-  - [ ] heeft minstens 2 pagina's (naast login/register)
-  - [ ] routes worden afgeschermd met authenticatie en autorisatie
+  - [x] heeft minstens 2 pagina's (naast login/register)
+  - [x] routes worden afgeschermd met authenticatie en autorisatie
 <br />
 
 - **state-management**
 
-  - [ ] meerdere API calls (naast login/register)
+  - [x] meerdere API calls (naast login/register)
   - [ ] degelijke foutmeldingen indien API call faalt
-  - [ ] gebruikt useState enkel voor lokale state
-  - [ ] gebruikt Context, useReducer, Redux… voor globale state
+  - [x] gebruikt useState enkel voor lokale state
+  - [x] gebruikt Context, useReducer, Redux… voor globale state
 <br />
 
 - **hooks**
 
-  - [ ] kent het verschil tussen de hooks (useCallback, useEffect…)
-  - [ ] gebruikt de hooks op de juiste manier
+  - [x] kent het verschil tussen de hooks (useCallback, useEffect…)
+  - [x] gebruikt de hooks op de juiste manier
 <br />
 
 - **varia**
   - [ ] een aantal niet-triviale testen (unit en/of e2e en/of ui)
-  - [ ] minstens één extra technologie
+  - [x] minstens één extra technologie
   - [ ] duidelijke en volledige README.md
   - [ ] volledig en tijdig ingediend dossier
 
@@ -69,38 +69,38 @@
 
 - **datalaag**
 
-  - [ ] voldoende complex (meer dan één tabel)
-  - [ ] één module beheert de connectie + connectie wordt gesloten bij sluiten server
-  - [ ] heeft migraties
-  - [ ] heeft seeds
+  - [x] voldoende complex (meer dan één tabel)
+  - [x] één module beheert de connectie + connectie wordt gesloten bij sluiten server
+  - [x] heeft migraties
+  - [x] heeft seeds
 <br />
 
 - **repositorylaag**
 
-  - [ ] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
-  - [ ] mapt OO-rijke data naar relationele tabellen en vice versa
+  - [x] definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing
+  - [x] mapt OO-rijke data naar relationele tabellen en vice versa
 <br />
 
 - **servicelaag met een zekere complexiteit**
 
-  - [ ] bevat alle domeinlogica
-  - [ ] bevat geen SQL-queries of databank-gerelateerde code
+  - [x] bevat alle domeinlogica
+  - [x] bevat geen SQL-queries of databank-gerelateerde code
 <br />
 
 - **REST-laag**
 
-  - [ ] meerdere routes met invoervalidatie
-  - [ ] degelijke foutboodschappen
-  - [ ] volgt de conventies van een RESTful API
-  - [ ] bevat geen domeinlogica
-  - [ ] degelijke authorisatie/authenticatie op alle routes
+  - [x] meerdere routes met invoervalidatie
+  - [x] degelijke foutboodschappen
+  - [x] volgt de conventies van een RESTful API
+  - [x] bevat geen domeinlogica
+  - [x] degelijke authorisatie/authenticatie op alle routes
 <br />
 
 - **varia**
   - [ ] een aantal niet-triviale testen (min. 1 controller >=80% coverage)
   - [ ] minstens één extra technologie
   - [ ] duidelijke en volledige `README.md`
-  - [ ] maakt gebruik van de laatste ES6-features (object destructuring, spread operator...)
+  - [x] maakt gebruik van de laatste ES6-features (object destructuring, spread operator...)
   - [ ] volledig en tijdig ingediend dossier
 
 
