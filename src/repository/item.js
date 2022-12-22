@@ -108,6 +108,5 @@ module.exports = {
     findItemsByQuery,
     deleteItem,
     findItemsByIdAndAuth0Id,
-    findItemsById,
     updateItem,
 };
