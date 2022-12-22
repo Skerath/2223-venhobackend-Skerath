@@ -1,7 +1,7 @@
-const {getLogger} = require('winston');
+const {getLogger} = require('../core/logging');
 const userRepository = require('../repository/user')
 const ServiceError = require("../core/serviceError");
-const logger = getLogger;
+const logger = getLogger();
 
 const register = async ({
                             name,
