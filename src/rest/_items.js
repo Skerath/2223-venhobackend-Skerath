@@ -11,9 +11,9 @@ const allowedTypes = {
     "TAILORING": ["LEGGINGS", "BOOTS"],
     "WEAPONSMITHING": ["SPEAR", "DAGGER"],
     "WOODWORKING": ["BOW", "WAND", "RELIK"],
-    "JEWELING": ["RINGS", "BRACELETS", "NECKLACES"],
-    "ALCHEMISM": ["POTIONS"],
-    "SCRIBING": ["SCROLLS"],
+    "JEWELING": ["RING", "BRACELET", "NECKLACE"],
+    "ALCHEMISM": ["POTION"],
+    "SCRIBING": ["SCROLL"],
     "COOKING": ["FOOD"],
 };
 

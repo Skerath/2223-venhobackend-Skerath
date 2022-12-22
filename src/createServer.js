@@ -36,7 +36,6 @@ async function createServer() {
     app.use(checkJwtToken());
 
 
-
     // app.use(async (ctx, next) => {
     //     const logger = getLogger();
     //     logger.info("-----------------------------------------------")
@@ -86,7 +85,6 @@ async function createServer() {
             }
         } catch (error) {
             const logger = getLogger();
-
 
             if (!error instanceof ValidationError)
                 logger.error('Error occured while handling a request', {

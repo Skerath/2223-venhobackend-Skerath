@@ -7,11 +7,14 @@ const findByAuth0Id = async (auth0id) => {
 };
 
 const create = async ({name, auth0id}) => {
-    return await getKnex()(userTables.users)
+    await getKnex()(userTables.users)
         .insert({
             user_name: name,
             auth0id: auth0id,
         });
+
+    const user = await findByAuth0Id(auth0id);
+    return (user.auth0id);
 };
 
 module.exports = {
