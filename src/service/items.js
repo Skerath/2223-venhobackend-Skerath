@@ -6,21 +6,18 @@ const {
 const ServiceError = require("../core/serviceError");
 const {findIngredientByName} = require("../repository/ingredient");
 
+const postByQuery = async (query, auth0id) => {
+    await createItem(query, auth0id)
+};
+
 const putByQuery = async (query, auth0id) => {
-
-    if (!query.id) {
-        await createItem(query, auth0id)
-        return true;
-    }
-
     const itemFound = await findItemsByIdAndAuth0Id(query.id, auth0id);
 
     if (itemFound.length === 0)
         throw ServiceError.notFound('There were no items found of this id belonging to this user.')
 
     await updateItem(query, auth0id)
-    return false;
-};
+}
 
 const getByQuery = async (query) => {
     let matchingItem;
@@ -56,6 +53,7 @@ const getById = async (dbId, userId) => {
 
 module.exports = {
     getByQuery,
+    postByQuery,
     putByQuery,
     deleteById,
     getById

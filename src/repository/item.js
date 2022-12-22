@@ -55,9 +55,7 @@ const findItemsByIdAndAuth0Id = async (input, auth0id) => {
 };
 
 const createItem = async (query, auth0id) => {
-
     const matchingItem = await findIngredientByName({name: query.ingredient}) // Todo this is being done too much
-
     await getKnex()(itemTables.items)
         .insert({
             display_name: query.name,
@@ -79,7 +77,7 @@ const updateItem = async (query, auth0id) => {
             type: query.type,
             ingredient_used: matchingIngredient.resourceID,
             owner_auth0id: auth0id,
-        })
+        });
 };
 
 const deleteItem = async (dbId, auth0id) => {

@@ -85,8 +85,7 @@ async function createServer() {
             }
         } catch (error) {
             const logger = getLogger();
-
-            if (!error instanceof ValidationError)
+            if (!(error instanceof ValidationError))
                 logger.error('Error occured while handling a request', {
                     error: serializeError(error),
                 });
