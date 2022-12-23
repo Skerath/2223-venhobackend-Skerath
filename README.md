@@ -32,7 +32,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 1. maak "ecosystem.config.js" aan in root folder. Dit is ter vervanging van de .env files, omdat ik met pm2 werk.
 1a. het bestand moet volgende structuur hebben:
-`module.exports = {
+```module.exports = {
     apps: [{
         name: "naam_applicatie",
         script: "./src/index.js",
@@ -63,7 +63,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
             isDevelopment: 'false',
         }
     }]
-};`
+};```
 
 
 2. na het installeren van PM2, kan je een van deze commando's uitvoeren om de service op te starten:
