@@ -1,7 +1,4 @@
-# Voornaam Familienaam (Studentennummer)
-
-> Duid aan welke vakken je volgt en vermeld voor deze vakken de link naar jouw GitHub repository. In het geval je slechts één vak volgt, verwijder alle inhoud omtrent het andere vak.
-> Verwijder alle instructies (lijnen die starten met >)
+# Maurice Cantaert (202181905)
 
 - [x] Front-end Web Development
   - [GitHub repository][[(github.com/HOGENT-Web)] ](https://github.com/Web-IV/2223-frontendweb-Skerath)
@@ -26,7 +23,18 @@ E2E voor Cypress (read & write)
 
 ## Projectbeschrijving
 
-> Omschrijf hier duidelijk waarover jouw project gaat. Voeg een domeinmodel (of EERD) toe om jouw entiteiten te verduidelijken.
+Venho is de naam van een groep spelers op een competitief spel waar alles zelf te ontdekken is.
+Elk ingredient is verborgen en moet onderzocht worden. De developers van het spel vragen om informatie zo verborgen mogelijk te houden en niet op het internet prijs te geven.
+Bovendien heeft het veel moeite gekost om alle data te verkrijgen en kan het niet zomaar gratis aan concurrerende groepen beschikbaargesteld worden.
+Op deze web applicatie is het niet alleen mogelijk als lid (Member) van Venho om de data te bekijken (indien ingelogd), het is ook mogelijk om 'de beste uitrustingen' van belangerijke kopspelers (Author). Diezelfde kopspelers hebben dan weer de mogelijkheid om hun keuzes te delen met alle Venho-leden.
+
+De voornamelijkste data zijn ingredienten (Ingredients). Ingredienten zijn opgebouwd uit "resources" (zie UML) en, afhankelijk van het type object/item waar het gebruikt voor kan worden, kan het ook andere attributen (modifiers/requirements) bevatten. (IngredientPositionModifiers, ConsumableOnlyIdentifiers, ItemOnlyIdentifiers).
+
+Deze ingredienten kunnen dan gebruikt worden op een object/item, afhankelijk van de usecase (profession). Stel nu een ingredient met usecase/profession Armouring, dit kan gebruikt worden voor een Helm (Helmet) of Borstplaat (Chestplate).
+
+Kortom: elke ingelogde lid heeft toegang tot de lijst van Ingredients (met bijhorende data) en Items (met bijhorende Ingredient). Een kopspeler heeft de mogelijkheid om zijn/haar Items te delen met medeleden, en kan dit op elk moment verwijderen/aanpassen.
+
+![uml](https://user-images.githubusercontent.com/93214249/209377609-afad0d0b-476b-49a1-9902-be9f438f7772.png)
 
 ## Screenshots
 
