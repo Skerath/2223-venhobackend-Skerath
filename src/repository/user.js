@@ -1,7 +1,7 @@
 const {getKnex, userColumns, userTables} = require('../data');
 
 const findByAuth0Id = async (auth0id) => {
-    return await getKnex()(userTables.users)
+    return getKnex()(userTables.users)
         .where(userColumns.users.userId, auth0id)
         .first();
 };
