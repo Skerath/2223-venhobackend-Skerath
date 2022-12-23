@@ -38,7 +38,18 @@ Kortom: elke ingelogde lid heeft toegang tot de lijst van Ingredients (met bijho
 
 ## Screenshots
 
-> Voeg enkele (nuttige!) screenshots toe die tonen wat de app doet.
+Lijst van Ingredients op desktop, geen filter
+![ingredients_list](https://user-images.githubusercontent.com/93214249/209385384-0069e1c3-0df9-4cde-a511-c445ebd55c01.png)
+
+Lijst van Ingredients op mobile, met filter
+![ingredients_list_mogelijkheid_filteren_mobile](https://user-images.githubusercontent.com/93214249/209385414-c25e7fd8-6715-4a15-9e5d-18cff00c8582.png)
+
+Nieuwe item submitten, met invoervalidatie
+![submit_new_item](https://user-images.githubusercontent.com/93214249/209385601-9f319acd-0618-4fde-ad0d-242fe301c20f.png)
+
+Een bestaande item - waar jij de eigenaar van bent - bewerken of verwijderen
+![submit_new_item](https://user-images.githubusercontent.com/93214249/209385692-fd3a3480-caab-46d5-afb5-c3f933366881.png)
+
 
 ## Behaalde minimumvereisten
 
