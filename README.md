@@ -11,7 +11,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [NodeJS](https://nodejs.org)
 - [Yarn](https://yarnpkg.com)
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
-- [PM2](https://pm2.keymetrics.io/) npm install pm2 -g
+- [PM2](https://pm2.keymetrics.io/) (npm install pm2 -g)
 
 ## Opstarten
 
