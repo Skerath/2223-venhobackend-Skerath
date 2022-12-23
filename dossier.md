@@ -5,10 +5,10 @@
 
 - [x] Front-end Web Development
   - [GitHub repository][[(github.com/HOGENT-Web)] ](https://github.com/Web-IV/2223-frontendweb-Skerath)
-  - [Online versie](github.com/HOGENT-Web)
-- [x] Web Services: GITHUB URL
+  - [Online versie][(github.com/HOGENT-Web)](https://web-iv-2223-frontendweb-skerath.onrender.com/)
+- [x] Web Services:
   - [GitHub repository][(github.com/HOGENT-Web)](https://github.com/Web-IV/2223-webservices-Skerath)
-  - [Online versie](github.com/HOGENT-Web)
+  - [Online versie][(github.com/HOGENT-Web)](https://51.89.23.246:9001/api/)
 
 **Logingegevens**
 
@@ -68,8 +68,8 @@ E2E voor Cypress (read & write)
 - **varia**
   - [x] een aantal niet-triviale testen (unit en/of e2e en/of ui)
   - [x] minstens één extra technologie
-  - [ ] duidelijke en volledige README.md
-  - [ ] volledig en tijdig ingediend dossier
+  - [x] duidelijke en volledige README.md
+  - [x] volledig en tijdig ingediend dossier
 
 
 ### Web Services
@@ -108,28 +108,34 @@ E2E voor Cypress (read & write)
   - [x] minstens één extra technologie
   - [x] duidelijke en volledige `README.md`
   - [x] maakt gebruik van de laatste ES6-features (object destructuring, spread operator...)
-  - [ ] volledig en tijdig ingediend dossier
+  - [x] volledig en tijdig ingediend dossier
 
 
 ## Projectstructuur
 
 ### Front-end Web Development
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns, hiërarchie van componenten, state...)?
+Componenten heb ik in de map 'commponents' gezet, in subdirectories op basis van categorie (items, filters, ingredients, ..). De API gerelateerde functies heb ik in hun eigen map gestoken. Pagina's waar extra code/styling in zitten, zijn verwerkt in pages.jsx. Deze Page components worden dan gebruikt in App.jsx met de pagina's waar geen extra code bij nodig is. De components Items, Ingredients en Filter zijn algemene containers die ItemCards, IngredientCards en FilterInput/FilterSelect gebruiken.
 
 ### Web Services
 
-> Hoe heb je jouw applicatie gestructureerd (mappen, design patterns...)?
+De back-end is grotendeels gestructureerd zoals het voorbeeldproject. In de rest laag worden de routes, authenticatie en validatie behandeld en geeft de request door aan de servicelaag. De servicelaag bevat domeinlogica en is de brug tussen de rest laag en de repository laag. De repository laag behandelt de daadwerkelijke acties naar en van de MySQL databank en mapt de data indien nodig. De connectie tussen de repository en de databank gaan via de datalaag, waar onder andere ook seeds/migraties gebeuren. In de core map vinden zich extra utilities terug: authentication, logging en het object ServiceError.
 
 ## Extra technologie
 
 ### Front-end Web Development
-
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+In combinatie met de normale Bootstrap gebruikte ik ook de React-Bootstrap component library. 
+Voor de validatie gebruikte ik Formik (de behandeling van de validatie zelf) en Yup (validatieschema, soortgelijk aan Joi maar eerder voor Front End validatie).
+- React-Bootstrap: https://www.npmjs.com/package/react-bootstrap
+- Formik: https://www.npmjs.com/package/formik
+- Yup: https://www.npmjs.com/package/yup
 
 ### Web Services
-
-> Wat is de extra technologie? Hoe werkt het? Voeg een link naar het npm package toe!
+Ik heb gebruik gemaakt van pm2, een production process manager met onder andere ingebouwde load balancer, restarten bij crashen, ..
+Omdat PM2 niet werkt in Render, heb ik gebruik gemaakt van een vps met Ubuntu. Dit gaf me echter een probleem aan de front end: een http connectie worrdt tegenwoordig niet meer toegelaten door browsers. Hiervoor heb ik dus de reverse proxy NGINX geïnstalleerd samen met de automatische certificaat generator/renewer Certbot. Hierdoor kan men api calls sturen en requests krijgen via https.
+- PM2: https://www.npmjs.com/package/pm2
+- NGINX: https://www.nginx.com/
+- CertBot: https://certbot.eff.org/
 
 ## Testresultaten
 
