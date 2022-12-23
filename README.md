@@ -14,7 +14,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [PM2](https://pm2.keymetrics.io/) (npm install pm2 -g)
 
 - [NGINX](https://www.nginx.com/) heb ik gebruikt voor de SSL https connectie vanuit mijn ubuntu vps. niet nodig voor lokaal testen, omdat http dan niet geblokkeerd wordt door de browser.
--> `sudo apt-get install nginx`
+-> `sudo apt install nginx`
 
 -> `sudo rm /etc/nginx/sites-enabled/default`
 
