@@ -125,7 +125,7 @@ De back-end is grotendeels gestructureerd zoals het voorbeeldproject. In de rest
 
 ### Front-end Web Development
 In combinatie met de normale Bootstrap gebruikte ik ook de React-Bootstrap component library. 
-Voor de validatie gebruikte ik Formik (de behandeling van de validatie zelf) en Yup (validatieschema, soortgelijk aan Joi maar eerder voor Front End validatie).
+Voor de validatie gebruikte ik Formik (de behandeling van de form validatie zelf) en Yup (validatieschema, soortgelijk aan Joi maar eerder voor Front End validatie).
 - React-Bootstrap: https://www.npmjs.com/package/react-bootstrap
 - Formik: https://www.npmjs.com/package/formik
 - Yup: https://www.npmjs.com/package/yup
