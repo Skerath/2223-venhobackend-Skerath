@@ -160,7 +160,10 @@ Omdat PM2 niet werkt in Render, heb ik gebruik gemaakt van een vps met Ubuntu. D
 
 ### Front-end Web Development
 
-> Schrijf hier een korte oplijsting en beschrijving van de geschreven testen
+Edit Item Form: item created, item edit failed validation, item edit succeeded: name changed, item deleted
+New Item Form: item created, item creation failed validation (unknown ingredient), item creation failed validation (ingredient + type mismatch), item deleted
+Unauthorized Item Edit: error on trying to delete other author's item, error on trying to edit other author's item
+Home Page: navigation links & login/logout button available
 
 ### Web Services
 
