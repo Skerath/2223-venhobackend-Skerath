@@ -105,7 +105,7 @@ describe('findIngredientById', function () {
         [3, "7-Yottabyte Storage Component"],
         [36, "Aspect of the Void"],
         [63, "Blessed Heart"],
-    ])('should return object with name property "%s"', async (input, expected) => {
+    ])('"%s" should return object with name property "%s"', async (input, expected) => {
         await initKnex();
         const query = {id: input};
 
