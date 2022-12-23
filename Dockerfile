@@ -1,19 +1,34 @@
-FROM keymetrics/pm2:latest-alpine
+FROM node:10.15-alpine as base
 
-# Bundle APP files
-COPY src src/
-COPY config config/
-COPY package.json .
-COPY ecosystem.config.js .
+RUN apk --no-cache --virtual build-dependencies add \
+  python \
+  make \
+  g++ \
+  && rm -f /var/cache/apk/* \
+  && npm config set unsafe-perm true \
+  && npm install --quiet node-gyp -g --cache /tmp/empty-cache
 
-# Install app dependencies
-ENV NPM_CONFIG_LOGLEVEL warn
-RUN npm install --production
+# builder #
+FROM base AS builder
 
-# Expose the listening port of your app
-EXPOSE 8000
+WORKDIR /app
+ENV NODE_ENV=production
+COPY ./package*.json .
+COPY ./yarn.lock .
+RUN yarn install && yarn cache clean
+COPY . .
 
-# Show current folder structure in logs
-RUN ls -al -R
+# production #
+FROM node:10.15-alpine AS production
+WORKDIR /app
 
-CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
+## copy project
+COPY --from=builder /app .
+ENV NODE_ENV=production
+CMD [ "yarn", "start:prod" ]
+
+# development #
+FROM base AS development
+
+WORKDIR /app
+ENV NODE_ENV=development
