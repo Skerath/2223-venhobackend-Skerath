@@ -53,8 +53,6 @@ Een bestaande item - waar jij de eigenaar van bent - bewerken of verwijderen
 
 ## Behaalde minimumvereisten
 
-> Duid per vak aan welke minimumvereisten je denkt behaald te hebben
-
 ### Front-end Web Development
 
 - **componenten**
