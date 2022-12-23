@@ -6,14 +6,12 @@ const logger = getLogger();
 const config = require('config'); // Configuration library
 const retryConnection = 5000;
 const knex = require('knex');
-const NODE_ENV = config.get('env');
-
-const DATABASE_HOSTNAME = 'localhost',
-    DATABASE_PORT = 3306,
-    DATABASE_USERNAME = 'dbdev',
-    DATABASE_NAME = 'venho_dev',
-    DATABASE_PASSWORD = 'dbdev',
-    isDevelopment = NODE_ENV === 'development';
+const DATABASE_HOSTNAME = config.get('database.hostname');
+const DATABASE_PORT = config.get('database.port');
+const DATABASE_USERNAME = config.get('database.username');
+const DATABASE_NAME = config.get('database.name');
+const DATABASE_PASSWORD = config.get('database.password');
+const isDevelopment = config.get('database.isDevelopment');
 
 // Connection
 let databaseConnection;
@@ -56,15 +54,14 @@ async function initKnex() {
         setTimeout(initKnex, retryConnection);
     }
 
-    try {
-        await getKnex().migrate.latest();
-    } catch (error) {
-        logger.error('Error while migrating database', {
-            error,
-        });
-    }
-
-    if (isDevelopment) {
+    if (isDevelopment === "true") {
+        try {
+            await getKnex().migrate.latest();
+        } catch (error) {
+            logger.error('Error while migrating database', {
+                error,
+            });
+        }
         try {
             await getKnex().seed.run();
         } catch (error) {

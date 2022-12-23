@@ -1,7 +1,7 @@
 const {
     resourcesTables,
     resourcesColumns
-} = require("../index");
+} = require("../data");
 
 module.exports = {
     up: async (knex) => {

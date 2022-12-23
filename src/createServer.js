@@ -57,7 +57,6 @@ async function createServer() {
         const logger = getLogger();
         logger.info(`Received request ${ctx.method} ${ctx.url}`);
 
-
         try {
             await next();
             logger.info(`Result was [${ctx.status}] for ${ctx.method} ${ctx.url}`,
