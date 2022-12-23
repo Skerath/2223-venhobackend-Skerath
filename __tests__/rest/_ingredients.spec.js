@@ -62,7 +62,7 @@ describe('Ingredients', () => {
         });
     });
 
-    describe('findIngredientsByQuery', function () {
+    describe('GET /api/ingredients/?=', () => {
         test.each([
             ["name", "Acidic Solution", "Acidic Solution"],
             ["tier", 0, "Acid Magma"],
@@ -76,6 +76,11 @@ describe('Ingredients', () => {
                 .set('Authorization', authHeader)
             expect(response.body[0].name).toEqual(expected);
         });
+
+        it('should return a validation error 404 when none were found', async () => {
+            const response = await request.get(`${url}/?name=THIS_SHOULD_BE_AN_IMPOSSIBLE_TO_HAVE_NAME`)
+                .set('Authorization', authHeader);
+            expect(response.status).toBe(404);
+        });
     });
 });
-
