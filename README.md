@@ -63,7 +63,8 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
             isDevelopment: 'false',
         }
     }]
-};```
+};
+```
 
 
 2. na het installeren van PM2, kan je een van deze commando's uitvoeren om de service op te starten:
