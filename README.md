@@ -89,5 +89,44 @@ of herstarten met `pm2 restart <id>`
 
 ## Testen
 
-1. Voer commando `jest` uit om de testen te runnen.
-2. Voer command `yarn test --coverage` uit om de coverage te zien van de testen. Er zijn unit testen voor repository en user met 100% coverage.
+1 maak het bestand 'test.js' aan in config met volgende structuur:
+```
+module.exports = {
+    env: 'test',
+    port: 9000,
+    log: {
+        level: 'silly',
+        disabled: true,
+    },
+    cors: {
+        origins: ['http://localhost:3000'],
+        maxAge: 3 * 60 * 60,
+    },
+    database: {
+        hostname: "<---VUL IN--->",
+        port: "<---VUL IN--->",
+        username: "<---VUL IN--->",
+        name: "<---VUL IN--->",
+        password: "<---VUL IN--->",
+        isDevelopment: "false",
+    },
+    auth: {
+        jwksUri: 'https://<---VUL IN--->',
+        audience: 'https://<---VUL IN--->',
+        issuer: 'https://<---VUL IN--->/',
+        userInfo: 'https://<---VUL IN--->/userinfo',
+        tokenUrl: 'https://<---VUL IN--->/oauth/token',
+        clientId: '<---VUL IN--->',
+        clientSecret: '<---VUL IN--->',
+        testUser: {
+            userId: '<---VUL IN--->',
+            username: '<---VUL IN--->',
+            password: '<---VUL IN--->',
+        },
+
+    }
+};
+```
+
+2. Voer commando `jest` uit om de testen te runnen.
+3. Voer command `yarn test --coverage` uit om de coverage te zien van de testen. Er zijn unit testen voor repository en user met 100% coverage.
