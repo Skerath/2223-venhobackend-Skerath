@@ -48,7 +48,7 @@ Nieuwe item submitten, met invoervalidatie
 ![submit_new_item](https://user-images.githubusercontent.com/93214249/209385601-9f319acd-0618-4fde-ad0d-242fe301c20f.png)
 
 Een bestaande item - waar jij de eigenaar van bent - bewerken of verwijderen
-![submit_new_item](https://user-images.githubusercontent.com/93214249/209385692-fd3a3480-caab-46d5-afb5-c3f933366881.png)
+![edit_existing_item](https://user-images.githubusercontent.com/93214249/209393300-cb6ccbd7-f66b-4f50-b0c4-455c36202b28.png)
 
 
 ## Behaalde minimumvereisten
