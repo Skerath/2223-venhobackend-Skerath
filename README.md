@@ -66,6 +66,29 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 };
 ```
 
+2. maak developent.js (of production.js) aan in config met volgende structuur:
+```
+module.exports = {
+    port: <---VUL IN--->,
+    log: {
+        level: 'silly',
+        disabled: false,
+    },
+    cors: {
+        origins: ['<---VUL IN--->'],
+        maxAge: 3 * 60 * 60,
+    },
+    database: {
+        hostname: "<---VUL IN--->",
+        port: "<---VUL IN--->",
+        username: "<---VUL IN--->",
+        name: "<---VUL IN--->",
+        password: "<---VUL IN--->",
+        isDevelopment: "<---VUL IN--->"
+    },
+};
+```
+
 
 2. na het installeren van PM2, kan je een van deze commando's uitvoeren om de service op te starten:
 
