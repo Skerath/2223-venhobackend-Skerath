@@ -56,20 +56,20 @@ describe('findIngredientModifiers', function () {
 
     it('should return 6 items', async () => {
         await initKnex();
-        let modifiersReturnedSize = 6;
+        const expectedSize = 6;
 
         const modifiers = await ingredientsApi.findIngredientModifiers();
 
-        expect(modifiers.length).toBe(modifiersReturnedSize)
+        expect(modifiers.length).toBe(expectedSize)
     });
 
     it('contains modifier names', async () => {
         await initKnex();
-        const professions = ["FIREDAMAGEBONUS", "WATERDEFENSE", "POISON", "MANASTEAL"];
+        const expectedProfessions = ["FIREDAMAGEBONUS", "WATERDEFENSE", "POISON", "MANASTEAL"];
 
         const result = await ingredientsApi.findIngredientModifiers();
 
-        expect(result).toEqual(expect.arrayContaining(professions));
+        expect(result).toEqual(expect.arrayContaining(expectedProfessions));
     });
 });
 
@@ -139,11 +139,11 @@ describe('findIngredientNames', function () {
 
     it('contains ingredient names', async () => {
         await initKnex();
-        const ingredients = ["Accursed Effigy", "Blessed Heart", "Acid Magma", "Aspect of the Void"];
+        const expectedIngredientNames = ["Accursed Effigy", "Blessed Heart", "Acid Magma", "Aspect of the Void"];
 
         const result = await ingredientsApi.findIngredientNames();
 
-        expect(result).toEqual(expect.arrayContaining(ingredients))
+        expect(result).toEqual(expect.arrayContaining(expectedIngredientNames))
     });
 });
 
@@ -151,19 +151,37 @@ describe('findIngredientProfessions', function () {
 
     it('should return 7 items', async () => {
         await initKnex();
-        let professionsReturnedSize = 7;
+        let expectedReturnSize = 7;
 
         const ingredients = await ingredientsApi.findIngredientProfessions();
 
-        expect(ingredients.length).toBe(professionsReturnedSize)
+        expect(ingredients.length).toBe(expectedReturnSize)
     });
 
     it('contains profession names', async () => {
         await initKnex();
-        const professions = ["WOODWORKING", "ALCHEMISM", "COOKING", "SCRIBING"];
+        const expectedProfessionNames = ["WOODWORKING", "ALCHEMISM", "COOKING", "SCRIBING"];
 
         const result = await ingredientsApi.findIngredientProfessions();
 
-        expect(result).toEqual(expect.arrayContaining(professions))
+        expect(result).toEqual(expect.arrayContaining(expectedProfessionNames))
+    });
+});
+
+describe('findIngredientsByQuery', function () {
+
+    test.each([
+        [{name: "Acidic Solution"}, "Acidic Solution"],
+        [{tier: 0}, "Acid Magma"],
+        [{minlevel: 101}, "Acidic Remains"],
+        [{maxlevel: 61}, "Acidic Solution"],
+        [{profession: "COOKING"}, "Blessed Heart"],
+        [{modifier: "SPEED"}, "Accursed Effigy"],
+    ])('should return object with property "%s"', async (input, expected) => {
+        await initKnex();
+
+        const results = await ingredientsApi.findIngredientsByQuery(input);
+
+        expect(results[0].name).toEqual(expected);
     });
 });

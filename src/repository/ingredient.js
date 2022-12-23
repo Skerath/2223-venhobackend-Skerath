@@ -63,11 +63,10 @@ const findIngredientsByQuery = async (query) => {
         .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
         .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id)
         .where((builder) => {
-            if (query.id) builder.where(resourcesColumns.resources.id, query.id);
             if (query.name) builder.whereILike(resourcesColumns.resources.name, `%${query.name}%`);
-            if (query.tier) builder.where(resourcesColumns.resources.tier, '<=', query.tier);
-            if (query.minlevel) builder.where(resourcesColumns.resources.level, '>=', query.minlevel);
-            if (query.maxlevel) builder.where(resourcesColumns.resources.level, '<=', query.maxlevel);
+            if (query.tier !== undefined) builder.where(resourcesColumns.resources.tier, query.tier);
+            if (query.minlevel !== undefined) builder.where(resourcesColumns.resources.level, '>=', query.minlevel);
+            if (query.maxlevel !== undefined) builder.where(resourcesColumns.resources.level, '<=', query.maxlevel);
             if (query.profession) builder.whereRaw(`? MEMBER OF(??)`, [query.profession, resourcesColumns.resources.professions]);
             if (query.modifier) builder.whereRaw(`? MEMBER OF(JSON_KEYS(??))`, [query.modifier, resourcesColumns.resources.modifiers]);
         });
