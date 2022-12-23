@@ -1,4 +1,5 @@
 module.exports = {
+    env: 'test',
     port: 9000,
     log: {
         level: 'silly',
@@ -17,17 +18,17 @@ module.exports = {
         isDevelopment: "false",
     },
     auth: {
-        jwksUri: 'AUTH_JWKS_URI',
-        audience: 'AUTH_AUDIENCE',
-        issuer: 'AUTH_ISSUER',
-        userInfo: 'AUTH_USER_INFO',
-        tokenUrl: 'AUTH_TOKEN_URL',
-        clientId: 'AUTH_CLIENT_ID',
-        clientSecret: 'AUTH_CLIENT_SECRET',
+        jwksUri: 'https://dev-0zesadwtf74rit5f.us.auth0.com/.well-known/jwks.json',
+        audience: 'https://wsproject.mauricec.be',
+        issuer: 'https://dev-0zesadwtf74rit5f.us.auth0.com/',
+        userInfo: 'https://dev-0zesadwtf74rit5f.us.auth0.com/userinfo',
+        tokenUrl: 'https://dev-0zesadwtf74rit5f.us.auth0.com/oauth/token',
+        clientId: 'wJznJLgDubQ5Hdysbu8dMR9n6atrUy4s',
+        clientSecret: 'jcjepTGhlxQD4KurNaMO6huyMPI4DG0FBDGPH9uxEPGi5CyIxTvNdcVNDYPUckI7',
         testUser: {
-            userId: 'AUTH_TEST_USER_USER_ID',
-            username: 'AUTH_TEST_USER_USERNAME',
-            password: 'AUTH_TEST_USER_PASSWORD',
+            userId: 'auth0|63a576d74e7c4abd8841200e',
+            username: 'e2e@test-hogent.be',
+            password: 'testAccount789$',
         },
 
     }

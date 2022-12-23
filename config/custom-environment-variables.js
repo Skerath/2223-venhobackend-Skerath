@@ -14,13 +14,13 @@ module.exports = {
             username: 'AUTH_TEST_USER_USERNAME',
             password: 'AUTH_TEST_USER_PASSWORD',
         },
-        database: {
-            hostname: 'DATABASE_HOSTNAME',
-            port: 'DATABASE_PORT',
-            username: 'DATABASE_USERNAME',
-            name: 'DATABASE_NAME',
-            password: 'DATABASE_PASSWORD',
-            isDevelopment: 'isDevelopment'
-        },
+    },
+    database: {
+        hostname: 'DATABASE_HOSTNAME',
+        port: 'DATABASE_PORT',
+        username: 'DATABASE_USERNAME',
+        name: 'DATABASE_NAME',
+        password: 'DATABASE_PASSWORD',
+        isDevelopment: 'isDevelopment'
     },
 };

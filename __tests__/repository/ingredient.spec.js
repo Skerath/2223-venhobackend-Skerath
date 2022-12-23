@@ -2,7 +2,6 @@ const ingredientsApi = require('../../src/repository/ingredient')
 const {initKnex} = require("../../src/data");
 
 describe('removeUnneededKeys', function () {
-
     it('should return the item object without excess keys', async () => {
         await initKnex();
         const originalItem = {
