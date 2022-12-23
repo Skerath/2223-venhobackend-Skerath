@@ -1,5 +1,5 @@
-const userApi = require('../../repository/user')
-const {initKnex} = require("../../data");
+const userApi = require('../../src/repository/user')
+const {initKnex} = require("../../src/data");
 
 describe('findByAuth0Id', function () {
     test.each([

@@ -21,6 +21,7 @@
     "pm2": "^5.2.2",
     "request": "^2.88.2",
     "serialize-error": "^8.1.0",
+    "supertest": "^6.3.3",
     "winston": "^3.8.2"
   },
   "devDependencies": {

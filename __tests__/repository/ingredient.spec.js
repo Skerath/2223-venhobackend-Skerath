@@ -1,5 +1,5 @@
-const ingredientsApi = require('../../repository/ingredient')
-const {initKnex} = require("../../data");
+const ingredientsApi = require('../../src/repository/ingredient')
+const {initKnex} = require("../../src/data");
 
 describe('removeUnneededKeys', function () {
 
