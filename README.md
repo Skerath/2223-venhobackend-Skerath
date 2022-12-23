@@ -39,6 +39,9 @@ https://pastebin.com/csU5m9mm
 `pm2-dev start ecosystem.config.js --env development
 pm2 start ecosystem.config.js --env production`
 
+!! Bij het opstarten kan volgende error in de logs teruggevonden: "WARNING: NODE_APP_INSTANCE value of '0' did not match any instance config file names."
+Dit is geen probleem
+
 2a. Na het opstarten kan je de status van de service bekekijken adhv
 `pm2 ls`
 
