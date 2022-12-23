@@ -12,10 +12,17 @@
 
 **Logingegevens**
 
-- Gebruikersnaam/e-mailadres:
-- Wachtwoord:
+Member (read)
+- Gebruikersnaam/e-mailadres: member@test-hogent.be
+- Wachtwoord: testAccount123$
 
-> Vul eventueel aan met extra accounts voor administrators of andere rollen.
+Author (read & write)
+- Gebruikersnaam/e-mailadres: author@test-hogent.be
+- Wachtwoord: testAccount456$
+
+E2E voor Cypress (read & write)
+- Gebruikersnaam/e-mailadres: e2e@test-hogent.be
+- Wachtwoord: testAccount789$
 
 ## Projectbeschrijving
 
