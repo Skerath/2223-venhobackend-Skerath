@@ -24,6 +24,7 @@ const findIngredientByName = async (query) => {
         .leftJoin(resourcesTables.consumableIdentifiers, resourcesColumns.resources.id, resourcesColumns.consumableOnlyIdentifiers.id)
         .leftJoin(resourcesTables.ingredientPositionModifier, resourcesColumns.resources.id, resourcesColumns.ingredientPositionModifiers.id)
         .whereILike(resourcesColumns.resources.name, `%${query.name}%`))[0];
+
     if (ingredients)
         return removeUnneededKeys(ingredients);
     else
@@ -79,5 +80,6 @@ module.exports = {
     findIngredientNames,
     findIngredientProfessions,
     findIngredientByName,
-    findIngredientById
+    findIngredientById,
+    removeUnneededKeys
 };
