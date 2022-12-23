@@ -17,38 +17,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 1. maak "ecosystem.config.js" aan in root folder.
 1a. het bestand moet volgende structuur hebben:
-`module.exports = {
-    apps: [{
-        name: "naam applicatie",
-        script: "./src/index.js",
-        env_development: {
-            NODE_ENV: 'development',
-            AUTH_JWKS_URI: 'https://<---VUL IN--->/.well-known/jwks.json',
-            AUTH_AUDIENCE: 'https://<---VUL IN--->',
-            AUTH_ISSUER: 'https://<---VUL IN--->',
-            AUTH_USER_INFO: 'https://<---VUL IN--->/userinfo',
-            DATABASE_HOSTNAME: 'localhost',
-            DATABASE_PORT: 3306,
-            DATABASE_USERNAME: 'dbdev',
-            DATABASE_NAME: 'venho_dev',
-            DATABASE_PASSWORD: 'dbdev',
-            isDevelopment: 'true',
-        },
-        env_production: {
-            NODE_ENV: 'production',
-            AUTH_JWKS_URI: 'https://<---VUL IN--->/.well-known/jwks.json',
-            AUTH_AUDIENCE: 'https://<---VUL IN--->',
-            AUTH_ISSUER: 'https://<---VUL IN--->',
-            AUTH_USER_INFO: 'https://<---VUL IN--->/userinfo',
-            DATABASE_HOSTNAME: 'localhost',
-            DATABASE_PORT: 3306,
-            DATABASE_USERNAME: 'dbdev',
-            DATABASE_NAME: 'venho_dev',
-            DATABASE_PASSWORD: 'dbdev',
-            isDevelopment: 'false',
-        }
-    }]
-};`
+https://pastebin.com/csU5m9mm
 
 2. na het installeren van PM2, kan je een van deze commando's uitvoeren om de service op te starten:
 `pm2-dev start ecosystem.config.js --env development
