@@ -1,7 +1,7 @@
 module.exports = {
     port: 9000,
     log: {
-        level: 'info',
+        level: 'silly',
         disabled: true,
     },
     cors: {
@@ -14,6 +14,6 @@ module.exports = {
         username: "dbdev",
         name: "venho_dev",
         password: "dbdev",
-        isDevelopment: "true"
+        isDevelopment: "false"
     },
 };
