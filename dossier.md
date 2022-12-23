@@ -160,33 +160,42 @@ Omdat PM2 niet werkt in Render, heb ik gebruik gemaakt van een vps met Ubuntu. D
 
 ### Front-end Web Development
 
-Edit Item Form: item created, item edit failed validation, item edit succeeded: name changed, item deleted
-New Item Form: item created, item creation failed validation (unknown ingredient), item creation failed validation (ingredient + type mismatch), item deleted
-Unauthorized Item Edit: error on trying to delete other author's item, error on trying to edit other author's item
-Home Page: navigation links & login/logout button available
+- Edit Item Form: item created, item edit failed validation, item edit succeeded: name changed, item deleted
+- New Item Form: item created, item creation failed validation (unknown ingredient), item creation failed validation (ingredient + type mismatch), item deleted
+- Unauthorized Item Edit: error on trying to delete other author's item, error on trying to edit other author's item
+- Home Page: navigation links & login/logout button available
 
 ### Web Services
 
-> Schrijf hier een korte oplijsting en beschrijving van de geschreven testen + voeg een screenshot van de coverage en uitvoering toe
+- Repository\Ingredient: (100% coverage)
+  removeUnneededKeys, findIngredientModifiers, findIngredientsByName, findIngredientById, findIngredientNames, findIngredientProfessions, findIngredientsByQuery
+  => testen of ze doen wat ze moeten doen, returnen de juiste data en juiste hoeveelheid data.
+  
+  ![tests_ingredient_repository](https://user-images.githubusercontent.com/93214249/209389145-1ca683e5-f548-4ce6-8313-9a4000aca843.png)
+
+
+- Repository\User: (100% coverage)
+  findByAuth0Id, create
+  => testen of ze de juiste data returnen & de user wel aangemaakt wordt
+  
+  ![tests_user_repository](https://user-images.githubusercontent.com/93214249/209389372-70260bd0-9026-4af6-aa3e-67c46489d2ce.png)
+
+- Rest\User: (100% coverage, service laag ook)
+  GET all ingredients, ingredient names, ingredient modifiers, ingredient professions, ingredients by query
+  => kijken of ze allemaal 200 terugsturen, of de returned data klopt, en of alle query parameters wel werken
+  
+  ![tests_rest_ingredient](https://user-images.githubusercontent.com/93214249/209390409-c3e266ae-6572-452e-bde2-368c9efb98a7.png)
+
+- Test coverage:
+
+  ![test_coverage](https://user-images.githubusercontent.com/93214249/209391009-2cb9074b-259e-4ba6-9862-49f3afa4e6e4.png)
 
 ## Gekende bugs
 
 ### Front-end Web Development
 
-> Zijn er gekende bugs?
+Ongekend
 
 ### Web Services
 
-> Zijn er gekende bugs?
-
-## Wat is er verbeterd/aangepast?
-
-> Deze sectie is enkel voor 2e zittijd, verwijder deze in 1e zittijd.
-
-### Front-end Web Development
-
-- Dit en dat
-
-### Web Services
-
-- Oh en dit ook
+Ongekend
