@@ -26,9 +26,3 @@ WORKDIR /app
 COPY --from=builder /app .
 ENV NODE_ENV=production
 CMD [ "yarn", "start:prod" ]
-
-# development #
-FROM base AS development
-
-WORKDIR /app
-ENV NODE_ENV=development
