@@ -15,11 +15,17 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 - [NGINX] heb ik gebruikt voor de SSL https connectie vanuit mijn ubuntu vps. niet nodig voor lokaal testen, omdat http dan niet geblokkeerd wordt
 -> `sudo apt-get install nginx`
+
 -> `sudo rm /etc/nginx/sites-enabled/default`
+
 -> `sudo touch /etc/nginx/sites-enabled/koaserver.conf`
+
 -> `sudo nano /etc/nginx/sites-enabled/koaserver.conf`, gebruik deze config: https://pastebin.com/yv1fLfkG
+
 -> genereer een ssl certificate en plaats het in /etc/nginx/ssl/ als cert.pem en key.pem
+
 -> `sudo systemctl restart nginx.service`
+
 -> `sudo systemctl status nginx.service`
 
 ## Opstarten
