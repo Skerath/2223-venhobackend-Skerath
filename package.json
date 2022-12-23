@@ -29,7 +29,7 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "start:prod": "pm2-runtime start ecosystem.config.js --env production",
+    "start:prod": "yarn pm2-runtime start ecosystem.config.js --env production",
     "start:dev": "pm2-dev start ecosystem.config.js --env development",
     "test": "jest",
     "test:coverage": "yarn test --coverage"
