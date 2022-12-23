@@ -47,7 +47,7 @@
 - **state-management**
 
   - [x] meerdere API calls (naast login/register)
-  - [ ] degelijke foutmeldingen indien API call faalt
+  - [x] degelijke foutmeldingen indien API call faalt
   - [x] gebruikt useState enkel voor lokale state
   - [x] gebruikt Context, useReducer, Redux… voor globale state
 <br />
@@ -59,7 +59,7 @@
 <br />
 
 - **varia**
-  - [ ] een aantal niet-triviale testen (unit en/of e2e en/of ui)
+  - [x] een aantal niet-triviale testen (unit en/of e2e en/of ui)
   - [x] minstens één extra technologie
   - [ ] duidelijke en volledige README.md
   - [ ] volledig en tijdig ingediend dossier
@@ -97,9 +97,9 @@
 <br />
 
 - **varia**
-  - [ ] een aantal niet-triviale testen (min. 1 controller >=80% coverage)
-  - [ ] minstens één extra technologie
-  - [ ] duidelijke en volledige `README.md`
+  - [x] een aantal niet-triviale testen (min. 1 controller >=80% coverage)
+  - [x] minstens één extra technologie
+  - [x] duidelijke en volledige `README.md`
   - [x] maakt gebruik van de laatste ES6-features (object destructuring, spread operator...)
   - [ ] volledig en tijdig ingediend dossier
 
