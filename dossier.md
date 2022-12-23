@@ -1,11 +1,11 @@
 # Maurice Cantaert (202181905)
 
 - [x] Front-end Web Development
-  - [GitHub repository][[(github.com/HOGENT-Web)] ](https://github.com/Web-IV/2223-frontendweb-Skerath)
-  - [Online versie][(github.com/HOGENT-Web)](https://web-iv-2223-frontendweb-skerath.onrender.com/)
+  - [GitHub repository](https://github.com/Web-IV/2223-frontendweb-Skerath) https://github.com/Web-IV/2223-frontendweb-Skerath
+  - [Online versie](https://web-iv-2223-frontendweb-skerath.onrender.com/) https://web-iv-2223-frontendweb-skerath.onrender.com/
 - [x] Web Services:
-  - [GitHub repository][(github.com/HOGENT-Web)](https://github.com/Web-IV/2223-webservices-Skerath)
-  - [Online versie][(github.com/HOGENT-Web)](https://51.89.23.246:9001/api/)
+  - [GitHub repository](https://github.com/Web-IV/2223-webservices-Skerath) https://github.com/Web-IV/2223-webservices-Skerath
+  - [Online versie](https://51.89.23.246:9001/api/) https://51.89.23.246:9001/api/
 
 **Logingegevens**
 
