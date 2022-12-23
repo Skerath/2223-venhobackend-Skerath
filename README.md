@@ -13,7 +13,7 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
 - [PM2](https://pm2.keymetrics.io/) (npm install pm2 -g)
 
-- [NGINX] heb ik gebruikt voor de SSL https connectie vanuit mijn ubuntu vps. niet nodig voor lokaal testen, omdat http dan niet geblokkeerd wordt
+- [NGINX](https://www.nginx.com/) heb ik gebruikt voor de SSL https connectie vanuit mijn ubuntu vps. niet nodig voor lokaal testen, omdat http dan niet geblokkeerd wordt door de browser.
 -> `sudo apt-get install nginx`
 
 -> `sudo rm /etc/nginx/sites-enabled/default`
@@ -30,9 +30,41 @@ Ik verwacht dat volgende software reeds geïnstalleerd is:
 
 ## Opstarten
 
-1. maak "ecosystem.config.js" aan in root folder.
+1. maak "ecosystem.config.js" aan in root folder. Dit is ter vervanging van de .env files, omdat ik met pm2 werk.
 1a. het bestand moet volgende structuur hebben:
-https://pastebin.com/csU5m9mm
+`module.exports = {
+    apps: [{
+        name: "naam_applicatie",
+        script: "./src/index.js",
+        env_development: {
+            NODE_ENV: 'development',
+            AUTH_JWKS_URI: 'https://<---VUL IN--->/.well-known/jwks.json',
+            AUTH_AUDIENCE: 'https://<---VUL IN--->',
+            AUTH_ISSUER: 'https://<---VUL IN--->',
+            AUTH_USER_INFO: 'https://<---VUL IN--->/userinfo',
+            DATABASE_HOSTNAME: 'localhost',
+            DATABASE_PORT: 3306,
+            DATABASE_USERNAME: 'dbdev',
+            DATABASE_NAME: 'venho_dev',
+            DATABASE_PASSWORD: 'dbdev',
+            isDevelopment: 'true',
+        },
+        env_production: {
+            NODE_ENV: 'production',
+            AUTH_JWKS_URI: 'https://<---VUL IN--->/.well-known/jwks.json',
+            AUTH_AUDIENCE: 'https://<---VUL IN--->',
+            AUTH_ISSUER: 'https://<---VUL IN--->',
+            AUTH_USER_INFO: 'https://<---VUL IN--->/userinfo',
+            DATABASE_HOSTNAME: 'localhost',
+            DATABASE_PORT: 3306,
+            DATABASE_USERNAME: 'dbdev',
+            DATABASE_NAME: 'venho_dev',
+            DATABASE_PASSWORD: 'dbdev',
+            isDevelopment: 'false',
+        }
+    }]
+};`
+
 
 2. na het installeren van PM2, kan je een van deze commando's uitvoeren om de service op te starten:
 
@@ -40,9 +72,9 @@ https://pastebin.com/csU5m9mm
 pm2 start ecosystem.config.js --env production`
 
 !! Bij het opstarten kan volgende error in de logs teruggevonden: "WARNING: NODE_APP_INSTANCE value of '0' did not match any instance config file names."
-Dit is geen probleem
+Dit is geen probleem, er is geen specifieke configuratie nodig.
 
-2a. Na het opstarten kan je de status van de service bekekijken adhv
+2a. Na het opstarten kan je de status van de service bekijken aan de hand van
 `pm2 ls`
 
 2b. pm2 heeft de mogelijkheid om meerdere instanties van deze service op te starten, met automatische load balancing en herstarten bij crashen, maar in dit geval heeft dit geen nut. Enkel het heropstarten wordt gebruikt.
