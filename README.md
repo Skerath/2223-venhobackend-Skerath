@@ -1,8 +1,8 @@
 # Examenopdracht Web Services
 
 - Student: MAURICE CANTAERT
-- Studentennummer: 202181905
-- E-mailadres: maurice.cantaert@student.hogent.be
+- Studentennummer: /
+- E-mailadres: /
 
 ## Vereisten
 
